@@ -7,4 +7,4 @@ class TrojmiastoSpider(scrapy.Spider):
     start_urls = ["http://ogloszenia.trojmiasto.pl/"]
 
     def parse(self, response):
-        pass
+        print('hello')
