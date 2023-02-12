@@ -18,3 +18,11 @@ class HousesspiderSpider(scrapy.Spider):
             house_item['number_of_rooms'] = response.xpath('//ul/li[2]/div/p[2]//text()').get().replace('\n                                            ', '').replace('\n                                    ', '')
 
             yield house_item
+
+        next_page = response.css('span.pages__item__active').get()
+        if next_page is not None:
+            yield response.follow(next_page, callback=self.parse)
+
+            
+
+            
