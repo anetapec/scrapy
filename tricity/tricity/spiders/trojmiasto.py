@@ -20,7 +20,9 @@ class HousesspiderSpider(scrapy.Spider):
             house_item['url'] = house.css('a.list__item__content__title__name.link').attrib['href']
             house_item['numbers_of_rooms'] = re.sub("[^.0-9]", "", house.css('li.list__item__details__icons__element.details--icons--element--l_pokoi').get())
             house_item['area'] = re.sub("[^.0-9]", "",house.css('p.list__item__details__icons__element__desc::text').get())
+            #house_item['price_per_meter'] = float(round((house_item['price']) / float(house_item['area'])), 2)
             house_item['price_per_meter'] = float(house_item['price']) / float(house_item['area'])
+            
             
                 
             #continue
