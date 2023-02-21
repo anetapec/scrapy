@@ -1,6 +1,8 @@
 import scrapy
 from tricity.items import HouseItem
 import re
+import json
+import hashlib
 
 
 class HousesspiderSpider(scrapy.Spider):
@@ -31,13 +33,18 @@ class HousesspiderSpider(scrapy.Spider):
             yield house_item
 
             
-            
-
-        
-
         path_url = response.css('.pages__controls__next ::attr(href)').extract_first()
         base_url = response.url
         next_page = base_url + path_url
         if path_url is not None:
             yield response.follow(next_page, callback=self.parse)
+
+        for house_item in HouseItem():
+            try:
+                item = {house_item["price"]: house_item["url"]}
+                result = hashlib.md5(json.dumps(item, sort_keys=True).encode('utf-8'))
+                hash_value = result.hexdigest
+                print(hash_value)
+            except:
+                print(" - ")
             
