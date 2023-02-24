@@ -29,10 +29,10 @@ class HousesspiderSpider(scrapy.Spider):
 
             yield house_item
 
-            
+        '''    
         path_url = response.css('.pages__controls__next ::attr(href)').extract_first()
         base_url = response.url
         next_page = base_url + path_url
         if path_url is not None:
             yield response.follow(next_page, callback=self.parse)
-            
+           ''' 
