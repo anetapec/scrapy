@@ -28,6 +28,6 @@ class MongoPipeline:
         return item
 
 
-class TricityPipeline:
+#class TricityPipeline:
     def process_item(self, item, spider):
         return item
