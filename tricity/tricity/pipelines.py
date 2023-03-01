@@ -3,12 +3,12 @@ import pymongo
 
 class MongoPipeline:
 
-    collection_name = 'house_item'
+    collection_name = 'house'
 
     def __init__(self, mongo_uri, mongo_db):
         self.mongo_uri = mongo_uri
         self.mongo_db = mongo_db
-
+        
     @classmethod
     def from_crawler(cls, crawler):
         return cls(
@@ -19,6 +19,8 @@ class MongoPipeline:
     def open_spider(self, spider):
         self.client = pymongo.MongoClient(self.mongo_uri)
         self.db = self.client[self.mongo_db]
+        #self.collection = db[settings['MONGODB_COLLECTION']]
+        #self.collection.insert(dict(item))
 
     def close_spider(self, spider):
         self.client.close()
@@ -28,6 +30,3 @@ class MongoPipeline:
         return item
 
 
-#class TricityPipeline:
-    def process_item(self, item, spider):
-        return item
