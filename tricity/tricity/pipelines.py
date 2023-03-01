@@ -1,32 +1,38 @@
-from tricity.items import HouseItem
 import pymongo
+from tricity.items import HouseItem
+from pymongo import MongoClient
+import settings
+from logging import log
+import hashlib
+import json
 
-class MongoPipeline:
+class MongoDBPipeline(object):
 
-    collection_name = 'house'
-
-    def __init__(self, mongo_uri, mongo_db):
-        self.mongo_uri = mongo_uri
-        self.mongo_db = mongo_db
-        
-    @classmethod
-    def from_crawler(cls, crawler):
-        return cls(
-            mongo_uri=crawler.settings.get('MONGO_URI'),
-            mongo_db=crawler.settings.get('MONGO_DATABASE', 'items')
+    def __init__(self):
+        connection = pymongo.MongoClient(
+            settings['MONGODB_SERVER'],
+            settings['MONGODB_PORT']
         )
-
-    def open_spider(self, spider):
-        self.client = pymongo.MongoClient(self.mongo_uri)
-        self.db = self.client[self.mongo_db]
-        #self.collection = db[settings['MONGODB_COLLECTION']]
-        #self.collection.insert(dict(item))
-
-    def close_spider(self, spider):
-        self.client.close()
+        db = connection[settings['MONGODB_DB']]
+        self.collection = db[settings['MONGODB_COLLECTION']]
 
     def process_item(self, item, spider):
-        self.db[self.collection_name].insert_one(HouseItem(item).asdict())
+        valid = True
+        for data in item:
+            if not data:
+                valid = False
+                raise HouseItem("Missing {0}!".format(data))
+        if valid:
+            self.collection.insert(dict(item))
+            log.msg("Question added to MongoDB database!",
+                    level=log.DEBUG, spider=spider)
         return item
-
-
+    
+    for item in HouseItem():
+            try:
+                item = {item["price"]: item["url"]}
+                result = hashlib.md5(json.dumps(item, sort_keys=True).encode('utf-8'))
+                hash_value = result.hexdigest
+                print(hash_value)
+            except:
+                print(" - ")
