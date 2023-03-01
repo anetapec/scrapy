@@ -1,38 +1,38 @@
 import pymongo
-from tricity.items import HouseItem
-from pymongo import MongoClient
-import settings
-from logging import log
-import hashlib
-import json
+import sys
+from .items import HouseItem
+import tricity.settings
 
-class MongoDBPipeline(object):
+class MongoDBPipeline:
 
-    def __init__(self):
-        connection = pymongo.MongoClient(
-            settings['MONGODB_SERVER'],
-            settings['MONGODB_PORT']
+    
+    #MONGO_URI = 'mongodb://127.0.0.1:27017/'
+
+    def __init__(self, mongodb_uri, mongodb_db, collection_name):
+        self.mongodb_uri = mongodb_uri
+        self.mongodb_db = mongodb_db
+        self.collection_name = collection_name
+        if not self.mongodb_uri: sys.exit("You need to provide a Connection String.")
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(
+            mongodb_uri=crawler.settings.get('mongodb_uri'),
+            mongodb_db=crawler.settings.get('mongodb_db', 'item'),
+            collection_name = crawler.settings.get('collection_name', 'item')
         )
-        db = connection[settings['MONGODB_DB']]
-        self.collection = db[settings['MONGODB_COLLECTION']]
+
+    def open_spider(self, spider):
+        self.client = self.mongodb_uri
+        self.db = self.client[self.mongodb_db]
+        self.collection_name = self.mongodb_uri[self.mongodb_db]
+        # Start with a clean database
+        self.db[self.collection_name].delete_many({})
+
+    def close_spider(self, spider):
+        self.client.close()
 
     def process_item(self, item, spider):
-        valid = True
-        for data in item:
-            if not data:
-                valid = False
-                raise HouseItem("Missing {0}!".format(data))
-        if valid:
-            self.collection.insert(dict(item))
-            log.msg("Question added to MongoDB database!",
-                    level=log.DEBUG, spider=spider)
+        data = dict(HouseItem(item))
+        self.db[self.collection_name].insert_one(data)
         return item
-    
-    for item in HouseItem():
-            try:
-                item = {item["price"]: item["url"]}
-                result = hashlib.md5(json.dumps(item, sort_keys=True).encode('utf-8'))
-                hash_value = result.hexdigest
-                print(hash_value)
-            except:
-                print(" - ")

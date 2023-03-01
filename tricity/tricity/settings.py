@@ -65,10 +65,9 @@ RANDOMIZE_DOWNLOAD_DELAY = True
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = ['tricity.pipelines.MongoDBPipeline', ]
 
-MONGODB_SERVER = "localhost"
-MONGODB_PORT = 27017
-MONGODB_DB = "tricity"
-MONGODB_COLLECTION = "houses"
+mongodb_uri = 'mongodb://127.0.0.1:27017/'
+mongodb_db = 'tricity'
+colection_name = 'houses'
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
