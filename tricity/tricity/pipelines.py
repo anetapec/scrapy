@@ -1,5 +1,4 @@
 import pymongo
-import sys
 from .items import HouseItem
 from tricity import settings
 class MongoDBPipeline:
@@ -15,6 +14,6 @@ class MongoDBPipeline:
         self.client.close()
 
     def process_item(self, item, spider):
-        data = dict(HouseItem(item))
+        data = dict(item)
         self.collection.insert_one(data)
         return item
