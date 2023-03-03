@@ -19,8 +19,6 @@ class HousesspiderSpider(scrapy.Spider):
             item = HouseItem()
             
             try:
-                item['date'] = datetime.today()
-                item['date_str'] = item['date'].strftime('%Y-%m-%d')
                 item['price'] = re.sub("[^0-9]", "", house.css('div.list__item__picture__price').get())
                 item['url'] = house.css('a.list__item__content__title__name.link').attrib['href']
                 item['numbers_of_rooms'] = re.sub("[^.0-9]", "", house.css('li.list__item__details__icons__element.details--icons--element--l_pokoi').get())
