@@ -9,6 +9,7 @@ import json
 class MongoDBPipeline:
     
     def set_hash(self):
+        item = HouseItem
         item = {item['area']: item['url']}
         result = hashlib.md5(json.dumps(item, sort_keys=True).encode('utf-8'))
         hash_value = result.hexdigest
@@ -31,7 +32,7 @@ class MongoDBPipeline:
 
     def process_item(self, item, spider):
         #self.__hash__ = self.set_hash()
-        item['hash'] = self.set_hash
+        item['hash'] = self.set_hash()
         item['scrapping_date'] = self.scrapping_date
         data = dict(item)
         self.collection.insert_one(data)
