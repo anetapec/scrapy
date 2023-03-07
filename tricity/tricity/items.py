@@ -8,5 +8,5 @@ class HouseItem(Item):
     numbers_of_rooms = Field() 
     area = Field() 
     scrapping_date = Field()
-    #hash = Field()
+    hash = Field()
     #last_seen_date = Field()
