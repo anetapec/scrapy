@@ -27,9 +27,15 @@ class MongoDBPipeline:
         self.client.close()
 
     def process_item(self, item, spider):
-        #self.__hash__ = self.set_hash()
         item['hash'] = self.set_hash(item)
         item['scrapping_date'] = self.scrapping_date
-        data = dict(item)
-        self.collection.insert_one(data)
+        
+        for data in item:
+            item['last_seen_date'] = []
+            if item['hash'] not in self.collection.db[settings.colection_name]:
+                data = dict(item)
+                self.collection.insert_one(data)
+            else:
+                item['last_seen_date'] = self.scrapping_date
+
         return item
