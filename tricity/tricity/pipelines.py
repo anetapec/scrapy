@@ -1,18 +1,14 @@
 import pymongo
-from .items import HouseItem
 from tricity import settings
 from datetime import datetime
 import hashlib
-import json
-#from spiders.trojmiasto import HouseItem
+
  
 class MongoDBPipeline:
     
-    def set_hash(self):
-        item = HouseItem
-        item = {item['area']: item['url']}
-        result = hashlib.md5(json.dumps(item, sort_keys=True).encode('utf-8'))
-        hash_value = result.hexdigest
+    def set_hash(self,item):
+        result = hashlib.md5(f"{item['price']}{item['url']}".encode('utf-8'))
+        hash_value = result.hexdigest()
         return hash_value
 
     def set_scrapping_date(self):
@@ -32,7 +28,7 @@ class MongoDBPipeline:
 
     def process_item(self, item, spider):
         #self.__hash__ = self.set_hash()
-        item['hash'] = self.set_hash()
+        item['hash'] = self.set_hash(item)
         item['scrapping_date'] = self.scrapping_date
         data = dict(item)
         self.collection.insert_one(data)
