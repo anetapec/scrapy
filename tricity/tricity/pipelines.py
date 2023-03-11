@@ -27,6 +27,7 @@ class MongoDBPipeline:
         self.client.close()
 
     def process_item(self, item, spider):
+        item['price_per_meter'] = float(item['price']) / float(item['area'])
         item['hash'] = self.set_hash(item)
         item['scrapping_date'] = self.scrapping_date
         data = dict(item)
@@ -34,5 +35,5 @@ class MongoDBPipeline:
             self.collection.insert_one(data)
         else:
             item['last_seen_date'] = self.scrapping_date
-
+            data = dict(item)
         return item
