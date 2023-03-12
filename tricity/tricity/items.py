@@ -5,6 +5,10 @@ from scrapy import Item, Field
 class HouseItem(Item):
     price = Field() 
     price_per_meter = Field()
-    url = Field() 
+    url = Field()
+    numbers_of_rooms = Field() 
     area = Field() 
-    number_of_rooms = Field()
+    scrapping_date = Field()
+    hash = Field()
+    last_seen_date = Field()
+    
