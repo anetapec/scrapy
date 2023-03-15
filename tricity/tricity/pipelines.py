@@ -20,6 +20,7 @@ class MongoDBPipeline:
         self.client = pymongo.MongoClient(settings.mongodb_uri)
         db = self.client[settings.mongodb_db]
         self.collection = db[settings.colection_name]
+        
         #start with a clean database
         self.collection.delete_many({})
 
@@ -31,9 +32,12 @@ class MongoDBPipeline:
         item['hash'] = self.set_hash(item)
         item['scrapping_date'] = self.scrapping_date
         data = dict(item)
-        if not item['hash'] in data:
+        filter_dict = {'hash': self.set_hash}
+        if self.collection.find(filter_dict).limit(1).explain():
+            #if not item['hash'] in data:
             self.collection.insert_one(data)
         else:
             item['last_seen_date'] = self.scrapping_date
+            self.collection.update_one(data)
             data = dict(item)
         return item
