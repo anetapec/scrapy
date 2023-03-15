@@ -32,7 +32,7 @@ class MongoDBPipeline:
         item['hash'] = self.set_hash(item)
         item['scrapping_date'] = self.scrapping_date
         data = dict(item)
-        filter_dict = {'hash': self.set_hash}
+        filter_dict = {item['hash']: self.set_hash(item)}        
         if self.collection.find(filter_dict).limit(1).explain():
             #if not item['hash'] in data:
             self.collection.insert_one(data)
