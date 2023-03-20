@@ -29,14 +29,12 @@ class MongoDBPipeline:
         item['hash'] = self.set_hash(item)
         data = dict(item)
         filter_dict = {'hash': item['hash']}        
-        if not self.collection.find(filter_dict).limit(1).explain():
-            self.collection.insert_one(data)
-            item['scrapping_date'] = self.scrapping_date
-            item['last_seen_date'] = self.scrapping_date
-            data = dict(item)
-        else:
+        if self.collection.find(filter_dict).limit(1).explain():
             item['last_seen_date'] = self.scrapping_date
             new_value = { '$set': {'last_seen_date': item['last_seen_date']}}
             self.collection.update_one(filter_dict, new_value)
-            data = dict(item)
+        else:
+            item['scrapping_date'] = self.scrapping_date
+            item['last_seen_date'] = self.scrapping_date
+            self.collection.insert_one(data)
         return item
