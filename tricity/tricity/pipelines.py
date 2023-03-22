@@ -26,19 +26,23 @@ class MongoDBPipeline:
 
     def process_item(self, item, spider):
         item['price_per_meter'] = str(round(float(item['price']) / float(item['area']), 2))
+        item['last_seen_date'] = self.scrapping_date
         item['hash'] = self.set_hash(item)
         filter_dict = {'hash': item['hash']} 
         data = dict(item)
-        if self.collection.count_documents((filter_dict), limit = 1):
+        if self.collection.count_documents((filter_dict), limit = 1) !=0:
+            
             item['last_seen_date'] = self.scrapping_date
             new_value = { '$set': {'last_seen_date': item['last_seen_date']}}
+            
             self.collection.update_one(filter_dict, new_value)
-            data = dict(item)
+            
         else:
-            item['scrapping_date'] = self.scrapping_date
             item['last_seen_date'] = self.scrapping_date
+
+            item['scrapping_date'] = self.scrapping_date
+            data = dict(item)
             self.collection.insert_one(data)
             
-            data = dict(item)
-            return item
+        
         return item
