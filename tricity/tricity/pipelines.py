@@ -20,20 +20,22 @@ class MongoDBPipeline:
         self.client = pymongo.MongoClient(settings.mongodb_uri)
         db = self.client[settings.mongodb_db]
         self.collection = db[settings.colection_name]
-        #start with a clean database
-        self.collection.delete_many({})
 
     def close_spider(self, spider):
         self.client.close()
 
     def process_item(self, item, spider):
         item['price_per_meter'] = str(round(float(item['price']) / float(item['area']), 2))
+        item['last_seen_date'] = self.scrapping_date
         item['hash'] = self.set_hash(item)
-        item['scrapping_date'] = self.scrapping_date
-        data = dict(item)
-        if not item['hash'] in data:
-            self.collection.insert_one(data)
+        filter_dict = {'hash': item['hash']} 
+        if self.collection.count_documents((filter_dict), limit = 1) !=0:
+            new_value = { '$set': {'last_seen_date': item['last_seen_date']}}
+            self.collection.update_one(filter_dict, new_value)    
         else:
-            item['last_seen_date'] = self.scrapping_date
+            item['scrapping_date'] = self.scrapping_date
             data = dict(item)
+            self.collection.insert_one(data)
+            
+        
         return item
