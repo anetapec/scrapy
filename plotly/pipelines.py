@@ -18,15 +18,13 @@ def count_avg_price(self):
     for x in avg_price:
         return(x)
 
-
-
-
-''''
 def count_houses_exposed(self):
-    houses_seen_today = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    number_houses_exposed = self.df.aggregate([{'$match': {'last_seen_date': houses_seen_today}}, {'$count': 'houses_exposed'}])
-    return number_houses_exposed
-
-def count_houses_sold(self):
+    number_houses_exposed = collection.aggregate([{'$match': {'last_seen_date': '2023-04-02 20:22:57'}}, {'$count': 'houses_exposed'}])
+    for dokument in number_houses_exposed:
+        return(dokument)
     
-'''
+def count_houses_sold(self):
+    houses_sold = collection.aggregate([{'$match': {'last_seen_date': {'$ne': '2023-04-02 20:22:57'}}}, {'$count': 'houses_sold'}])
+    for h_sold in houses_sold:
+        return(h_sold)
+    
