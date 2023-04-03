@@ -19,7 +19,7 @@ class HousesspiderSpider(scrapy.Spider):
             item = HouseItem()
             
             try:
-                item['price'] = re.sub("[^0-9]", "", house.css('div.list__item__picture__price').get())
+                item['price'] = int(re.sub("[^0-9]", "", house.css('div.list__item__picture__price').get()))
                 item['url'] = house.css('a.list__item__content__title__name.link').attrib['href']
                 item['numbers_of_rooms'] = re.sub("[^.0-9]", "", house.css('li.list__item__details__icons__element.details--icons--element--l_pokoi').get())
                 item['area'] = re.sub("[^.0-9]", "",house.css('p.list__item__details__icons__element__desc::text').get())
@@ -30,10 +30,10 @@ class HousesspiderSpider(scrapy.Spider):
 
             yield item
 
-        '''    
+         
         path_url = response.css('.pages__controls__next ::attr(href)').extract_first()
-        base_url = response.url
+        base_url = "https://ogloszenia.trojmiasto.pl/nieruchomosci/dom/gdynia/"
         next_page = base_url + path_url
         if path_url is not None:
             yield response.follow(next_page, callback=self.parse)
-           ''' 
+           
