@@ -51,3 +51,6 @@ def count_houses_sold(self):
     houses_sold = self.collection.aggregate([{'$match': {'last_seen_date': {'$ne': '2023-04-02 20:22:57'}}}, {'$count': 'houses_sold'}])
     for h_sold in houses_sold:
         return h_sold
+
+if __name__ == '__main__':
+    print("Running File")

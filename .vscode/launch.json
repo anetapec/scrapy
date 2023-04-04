@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: moduł",
+            "name": "Python: scrapy",
             "type": "python",
             "request": "launch",
             "module": "scrapy",
@@ -15,6 +15,13 @@
                 "crawl", 
                 "tricity"
             ]
+        }, 
+        {
+            "name": "Python: dashboards",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/dashboards/app.py",
+            "console": "integratedTerminal"
         }
     ]
 }
