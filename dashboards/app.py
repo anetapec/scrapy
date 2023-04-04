@@ -15,7 +15,6 @@ class DataSource:
         df = pd.DataFrame(list(self.collection.find()))
         return df
 
-    
 if __name__ == '__main__':
     data_source = DataSource()
 
