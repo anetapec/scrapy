@@ -17,7 +17,6 @@ class DataSource:
 
 if __name__ == '__main__':
     data_source = DataSource()
-
     avg_by_price = data_source.df.groupby('scrapping_date')['price'].mean()
     avg_by_price_per_meter = data_source.df.groupby('scrapping_date')['price_per_meter'].mean()
     median_by_price = data_source.df.groupby('scrapping_date')['price'].median()
