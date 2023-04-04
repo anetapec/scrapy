@@ -2,7 +2,6 @@ import pymongo
 import pandas as pd
 from datetime import datetime
 
-
 class DataSource:
 
     def __init__(self):
