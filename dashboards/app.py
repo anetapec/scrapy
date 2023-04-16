@@ -61,11 +61,22 @@ daily_number_of_houses_for_sale = groupped_scraping_date_by_day['scrapping_date'
 # Converting an object 'last_seen_date' from a date in a string to a Date Time object
 data_source.df['last_seen'] = pd.to_datetime(data_source.df['last_seen_date'])
 groupped_last_seen_date_by_day = data_source.df.set_index('last_seen').groupby(pd.Grouper(freq='D'))
+
 # Number of houses sold per day
 daily_number_of_houses_sold = groupped_last_seen_date_by_day['last_seen_date'].count()
+daily_number_of_houses_sold_df = daily_number_of_houses_sold.to_frame().reset_index()
+print(daily_number_of_houses_sold_df)
+daily_number_of_houses_sold_df.to_csv('daily_number_sold.csv')
+#df_daily_price_houses_sold = pd.DataFrame(daily_number_of_houses_sold_df['last_seen_date'])['price'].groupby('last_seen_date')
+df_daily_price_houses_sold = daily_number_of_houses_sold_df[daily_number_of_houses_sold_df.last_seen!='2023-04-16']
+print(df_daily_price_houses_sold)
+df_daily_price_houses_sold.to_csv('df_daily_price_houses_sold.csv')
 #sale prices of houses on particular days
-daily_sale_prices_of_houses_sold = groupped_last_seen_date_by_day['last_seen_date'](data_source.df['price'])
-print(daily_sale_prices_of_houses_sold)
+#price_sold_houses = daily_number_of_houses_sold_df.groupby(data_source.df['last_seen']('price'))
+#print(price_sold_houses)
+
+
+#daily_sale_prices_of_houses_sold = groupped_last_seen_date_by_day['last_seen_date'].count()
 # Number of houses sold per week   
 groupped_last_seen_date_by_week = data_source.df.set_index('last_seen').groupby(pd.Grouper(freq='W'))
 weekly_number_of_houses_sold = groupped_last_seen_date_by_week['last_seen_date'].count()
@@ -73,9 +84,8 @@ print(weekly_number_of_houses_sold)
   
 app = Dash(__name__)
 
-#data_source.df = data_source.df[:30]
-#min_val = min(len(data_source.df), 30)
 avg_price_by_price_df = avg_price_by_price.to_frame().reset_index()
+print(avg_price_by_price_df)
 fig = px.line(avg_price_by_price_df, x="datetime", y="price")
 
 avg_price_by_price_per_meter_df = avg_price_by_price_per_meter.to_frame().reset_index()
@@ -86,19 +96,20 @@ app.layout = html.Div(children=[
     html.P('Analysis of the average sale price of houses during the day'),
     html.H2('Mean for price per day of houseses sold'),
     dcc.Graph(
-        id='example-graph',
-        figure=fig
-        )]
-    )
+        id='example-graph1',
+        figure=px.line(avg_price_by_price_df, x="datetime", y="price")
+        )],
+)
+
 app.layout = html.Div(children=[
     html.P('Mean for price_per_meter per day of houseses sold'),
     dcc.Graph(
-        id='exampe-graph',
-        figure=fig_ppm
+        id='exampe-graph2',
+        figure=px.line(avg_price_by_price_per_meter_df, x="datetime", y="price_per_meter")
+    )]
+
     )
         
-
-])
 
 '''''
 
