@@ -72,19 +72,26 @@ data_source.df['date_of_sale'] = pd.to_datetime(data_source.df['last_seen_date']
 older_than = pd.Timestamp.now() - pd.Timedelta(days=1)
 houses_sold = data_source.df[(data_source.df['date_of_sale'] <=  older_than)]
 
+
 # grouping by day 
 groupped_last_seen_date_by_day = houses_sold.set_index('date_of_sale').groupby(pd.Grouper(freq='D'))
 
 # Number of houses sold per day
 daily_number_of_houses_sold = groupped_last_seen_date_by_day['last_seen_date'].count()
 daily_number_of_houses_sold_df = daily_number_of_houses_sold.to_frame().reset_index()
+
+
+
+sorted_df = houses_sold.sort_values(by='last_seen_date')
 # Prices of houses sold on particular days
-house_prices_sold_on_a_given_day_by_price = pd.DataFrame(groupped_last_seen_date_by_day['price'])
+house_prices_sold_on_a_given_day_by_price = groupped_last_seen_date_by_day['price']
+
 # Prices per meter of houses sold on particular days
 house_prices_sold_on_a_given_day_by_price_per_meter = pd.DataFrame(groupped_last_seen_date_by_day['price_per_meter'])
 
 # grouping by weekly 
 groupped_last_seen_date_by_week = houses_sold.set_index('date_of_sale').groupby(pd.Grouper(freq='W'))
+
 # Number of houses sold per week
 weekly_number_of_houses_sold = groupped_last_seen_date_by_week['last_seen_date'].count()
 weekly_number_of_houses_sold_df = weekly_number_of_houses_sold.to_frame().reset_index()
@@ -166,30 +173,15 @@ app.layout = html.Div(children=[
     
     dcc.Graph(
         id='graph9',
-        figure=px.line(daily_number_of_houses_for_sale_df, x="datetime", y="scrapping_date")
+        figure=px.bar(sorted_df, x="last_seen_date", y="price", color="url")
         ),
 
-    html.P('Weekly number of houses for sale'), 
-    
-    dcc.Graph(
-        id='graph10',
-        figure=px.line(weekly_number_of_houses_for_sale_df, x="datetime", y="scrapping_date")
-        ),
 
-    html.H3('Hauses sales analysis'),
-    
-    html.P('Number of houses sold per day'), 
-    
-    dcc.Graph(
-        id='graph11',
-        figure=px.line(daily_number_of_houses_sold_df, x="date_of_sale", y="last_seen_date")
-        ),
 
-    html.P('Number of houses sold per week'), 
-    
+
     dcc.Graph(
-        id='graph12',
-        figure=px.line(weekly_number_of_houses_sold_df, x="date_of_sale", y="last_seen_date")
+        id='graph13',
+        figure=px.line(sorted_df, x="date_of_sale", y="last_seen_date")
         ),
 
 ]   
