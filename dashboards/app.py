@@ -17,90 +17,47 @@ class DataSource:
         df = pd.DataFrame(list(self.collection.find()))
         return df
 
-# Houses for sale:
+    def groupped_date(self, new_column_name, column_name, frequency):
+        self.df[new_column_name] = pd.to_datetime(self.df[column_name]) #tworzy nową kolumne grupującą po dniu na podstawie kolumny
+        groupped_date_by_freq= self.df.set_index(new_column_name).groupby(pd.Grouper(freq = frequency)) #grupuje nową kolumnę po dniu lub tyg
+        return groupped_date_by_freq #powstają nowe kolumny datetime i date of sale z danym freq 
+   
+data_source = DataSource()   
+groupped_scrapping_date_by_day = data_source.groupped_date(new_column_name='datetime', column_name='scrapping_date', frequency='D')
+groupped_scrapping_date_by_week = data_source.groupped_date(new_column_name='datetime', column_name='scrapping_date', frequency='W',) 
 
-data_source = DataSource()
-
-# converting an object 'scrapping_date' from a date in a string to a Date Time object 'datetime'
-data_source.df['datetime'] = pd.to_datetime(data_source.df['scrapping_date']) 
-# grouping by day 
-groupped_scraping_date_by_day = data_source.df.set_index('datetime').groupby(pd.Grouper(freq='D'))
-# Average daily price of houses for sale
-avg_price_by_price = groupped_scraping_date_by_day['price'].mean()
-avg_price_by_price_df = avg_price_by_price.to_frame().reset_index()
-# Average daily price per meter of houses for sale
-avg_price_by_price_per_meter = groupped_scraping_date_by_day['price_per_meter'].mean()
-avg_price_by_price_per_meter_df = avg_price_by_price_per_meter.to_frame().reset_index()
-# Median daily price of houses for sale
-median_price_by_price = groupped_scraping_date_by_day['price'].median()
-median_price_by_price_df = median_price_by_price.to_frame().reset_index()
-# Median daily price per meter of houses for sale
-median_price_by_price_per_meter = groupped_scraping_date_by_day['price_per_meter'].mean()
-median_price_by_price_per_meter_df = median_price_by_price_per_meter.to_frame().reset_index()
-
+# ANALYSIS HOUSES FOR SALE
+# Daily prices:
+avg_price = groupped_scrapping_date_by_day['price'].mean().to_frame().reset_index() 
+avg_price_by_price_per_meter = groupped_scrapping_date_by_day['price_per_meter'].mean().to_frame().reset_index() 
+median_price= groupped_scrapping_date_by_day['price'].median().to_frame().reset_index() 
+median_price_by_price_per_meter = groupped_scrapping_date_by_day['price_per_meter'].median().to_frame().reset_index() 
 # Weekly prices:
+weekly_avg_price = groupped_scrapping_date_by_week['price'].mean().to_frame().reset_index() 
+weekly_avg_price_by_price_per_meter = groupped_scrapping_date_by_week['price_per_meter'].mean().to_frame().reset_index() 
+weekly_median_price = groupped_scrapping_date_by_week['price'].median().to_frame().reset_index() 
+weekly_median_price_by_price_per_meter = groupped_scrapping_date_by_week['price_per_meter'].median().to_frame().reset_index() 
+## Number of houses 
+daily_number_of_houses_for_sale = groupped_scrapping_date_by_day['scrapping_date'].count().to_frame().reset_index() 
+weekly_number_of_houses_for_sale = groupped_scrapping_date_by_week['scrapping_date'].count().to_frame().reset_index() 
 
-# grouping by week
-groupped_scraping_date_by_week = data_source.df.set_index('datetime').groupby(pd.Grouper(freq='W'))
-# Average weekly price of houses for sale
-weekly_avg_price_by_price = groupped_scraping_date_by_week['price'].mean()
-weekly_avg_price_by_price_df = weekly_avg_price_by_price.to_frame().reset_index()
-# Average weekly price per meter of houses for sale
-weekly_avg_price_by_price_per_meter = groupped_scraping_date_by_week['price_per_meter'].mean()
-weekly_avg_price_by_price_per_meter_df = weekly_avg_price_by_price_per_meter.to_frame().reset_index()
-# Median weekly price of houses for sale
-weekly_median_price_by_price = groupped_scraping_date_by_week['price'].median()
-weekly_median_price_by_price_df = weekly_median_price_by_price.to_frame().reset_index()
-# Median weekly price per meter of houses for sale
-weekly_median_price_by_price_per_meter = groupped_scraping_date_by_week['price_per_meter'].median()
-weekly_median_price_by_price_per_meter_df = weekly_median_price_by_price_per_meter.to_frame().reset_index()
-
-# Number of houses for sale 
-
-# Daily number of houses for sale  
-daily_number_of_houses_for_sale = groupped_scraping_date_by_day['scrapping_date'].count()
-daily_number_of_houses_for_sale_df = daily_number_of_houses_for_sale.to_frame().reset_index()
-# Weekly number of houses for sale 
-weekly_number_of_houses_for_sale = groupped_scraping_date_by_week['scrapping_date'].count()
-weekly_number_of_houses_for_sale_df = weekly_number_of_houses_for_sale.to_frame().reset_index()
-
-
-# Home sales analysis
-
-# converting an object 'last_seen_date' from a date in a string to a Date Time object 'date_of_sale;
-data_source.df['date_of_sale'] = pd.to_datetime(data_source.df['last_seen_date']) 
+# HOUSES SOLD
+groupped_last_seen_date_by_day = data_source.groupped_date(new_column_name='date_of_sale', column_name='last_seen_date', frequency='D')
+groupped_last_seen_date_by_week = data_source.groupped_date(new_column_name='date_of_sale', column_name='last_seen_date', frequency='W')
 older_than = pd.Timestamp.now() - pd.Timedelta(days=1)
 houses_sold = data_source.df[(data_source.df['date_of_sale'] <=  older_than)]
 
-
-# grouping by day 
-groupped_last_seen_date_by_day = houses_sold.set_index('date_of_sale').groupby(pd.Grouper(freq='D'))
-
-# Number of houses sold per day
-daily_number_of_houses_sold = groupped_last_seen_date_by_day['last_seen_date'].count()
-daily_number_of_houses_sold_df = daily_number_of_houses_sold.to_frame().reset_index()
-
-
-
-sorted_df = houses_sold.sort_values(by='last_seen_date')
+# Number of houses sold 
+daily_number_of_houses_sold = groupped_last_seen_date_by_day['last_seen_date'].count().to_frame().reset_index()
+daily_number_of_houses_sold.to_csv('ilosc24kwiecien.csv')
+weekly_number_of_houses_sold = groupped_last_seen_date_by_week['last_seen_date'].count().to_frame().reset_index()
 # Prices of houses sold on particular days
-house_prices_sold_on_a_given_day_by_price = groupped_last_seen_date_by_day['price']
+sorted_df = houses_sold.sort_values(by='last_seen_date')
+house_prices_sold_on_a_given_day_by_price = groupped_last_seen_date_by_day['price'] # ////
 
-# Prices per meter of houses sold on particular days
+
 house_prices_sold_on_a_given_day_by_price_per_meter = pd.DataFrame(groupped_last_seen_date_by_day['price_per_meter'])
-
-# grouping by weekly 
-groupped_last_seen_date_by_week = houses_sold.set_index('date_of_sale').groupby(pd.Grouper(freq='W'))
-
-# Number of houses sold per week
-weekly_number_of_houses_sold = groupped_last_seen_date_by_week['last_seen_date'].count()
-weekly_number_of_houses_sold_df = weekly_number_of_houses_sold.to_frame().reset_index()
-
-
-
-
-
-
+house_prices_sold_on_a_given_day_by_price_per_meter.to_csv('24kwieciem.csv')
 
 
 app = Dash(__name__)
@@ -115,56 +72,56 @@ app.layout = html.Div(children=[
     
     dcc.Graph(
         id='graph1',
-        figure=px.line(avg_price_by_price_df, x="datetime", y="price")
+        figure=px.line(avg_price, x="datetime", y="price")
         ),
 
     html.P('Average daily price per meter of houses for sale'),
 
     dcc.Graph(
         id='graph2',
-        figure=px.line(avg_price_by_price_per_meter_df, x="datetime", y="price_per_meter")
+        figure=px.line(avg_price_by_price_per_meter, x="datetime", y="price_per_meter")
     ),
 
     html.P('Median daily price of houses for sale'),
 
     dcc.Graph(
         id='graph3',
-        figure=px.line(median_price_by_price_df, x="datetime", y="price")
+        figure=px.line(median_price, x="datetime", y="price")
     ),
 
     html.P('Median daily price per meter of houses for sale'),
 
     dcc.Graph(
         id='graph4',
-        figure=px.line(median_price_by_price_per_meter_df, x="datetime", y="price_per_meter")
+        figure=px.line(median_price_by_price_per_meter, x="datetime", y="price_per_meter")
     ),
 
     html.P('Average weekly price of houses for sale'),
 
     dcc.Graph(
         id='graph5',
-        figure=px.line(weekly_avg_price_by_price_df, x="datetime", y="price")
+        figure=px.line(weekly_avg_price, x="datetime", y="price")
     ),
 
     html.P('Average weekly price per meter of houses for sale'),
 
     dcc.Graph(
         id='graph6',
-        figure=px.line(weekly_avg_price_by_price_per_meter_df, x="datetime", y="price_per_meter")
+        figure=px.line(weekly_avg_price_by_price_per_meter, x="datetime", y="price_per_meter")
     ),
 
     html.P('Median weekly price of houses for sale'),
 
     dcc.Graph(
         id='graph7',
-        figure=px.line(weekly_median_price_by_price_df , x="datetime", y="price")
+        figure=px.line(weekly_median_price , x="datetime", y="price")
     ),
 
     html.P('Median weekly price per meter of houses for sale'),
 
     dcc.Graph(
         id='graph8',
-        figure=px.line(weekly_median_price_by_price_per_meter_df , x="datetime", y="price_per_meter")
+        figure=px.line(weekly_median_price_by_price_per_meter , x="datetime", y="price_per_meter")
     ),
 
     html.H3('Number of houses for sale '),
@@ -176,26 +133,15 @@ app.layout = html.Div(children=[
         figure=px.bar(sorted_df, x="last_seen_date", y="price", color="url")
         ),
 
-
-
-
-    dcc.Graph(
-        id='graph13',
-        figure=px.line(sorted_df, x="date_of_sale", y="last_seen_date")
-        ),
-
-]   
+   ]   
 )
-
-
-     
-
-
-
-
+ 
 
 
 
 
 if __name__ == "__main__":
     app.run_server(debug=False)
+
+    
+
