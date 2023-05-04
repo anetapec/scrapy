@@ -41,9 +41,13 @@ class DataSource:
     
     def skip_unsold_houses(self):
         self.df[self.new_column_name] = pd.to_datetime(self.df[self.column_name]) 
-        groupped_date_by_freq= self.df.set_index(self.new_column_name).groupby(pd.Grouper(freq = self.frequency))
         older_than = pd.Timestamp.now() - pd.Timedelta(days=1)
-        return groupped_date_by_freq()[groupped_date_by_freq()[self.new_column_name] <=  pd.to_datetime(older_than)]   
+        houses_sold = self.df[(self.df[self.new_column_name] <=  older_than)]
+        
+        groupped_date_by_freq= houses_sold.set_index(self.new_column_name).groupby(pd.Grouper(freq = self.frequency))
+
+        
+        return groupped_date_by_freq  
 
 
 
@@ -78,6 +82,8 @@ group_sold_by_day = DataSource(new_column_name='date_of_sale', column_name='last
 group_sold_by_week = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price', frequency='W')
 
 print(group_sold_by_day.skip_unsold_houses())
+daily_number_houses_sold = group_sold_by_day.skip_unsold_houses()['last_seen_date'].count().to_frame().reset_index()
+print(daily_number_houses_sold)
 
    
 
