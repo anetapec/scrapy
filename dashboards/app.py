@@ -22,13 +22,10 @@ class DataSource:
         df = pd.DataFrame(list(self.collection.find()))
         return df
 
-    def groupped_date(self):  #powstają nowe kolumny datetime i date of sale z danym freq 
-        self.df[self.new_column_name] = pd.to_datetime(self.df[self.column_name]) #tworzy nową kolumne grupującą po dniu na podstawie kolumny
-        groupped_date_by_freq= self.df.set_index(self.new_column_name).groupby(pd.Grouper(freq = self.frequency)) #grupuje nową kolumnę po dniu lub tyg
+    def groupped_date(self): 
+        self.df[self.new_column_name] = pd.to_datetime(self.df[self.column_name]) 
+        groupped_date_by_freq= self.df.set_index(self.new_column_name).groupby(pd.Grouper(freq = self.frequency)) 
         return groupped_date_by_freq
-    
-    def skip_the_column_first_scraping(self):
-        pass 
     
     def avg_price_by_column(self):
         return self.groupped_date()[self.column_by_count].mean().to_frame().reset_index()
