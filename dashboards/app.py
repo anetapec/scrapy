@@ -60,7 +60,7 @@ class DataSource:
 daily_group = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price', frequency='D') 
 avg_price_by_day = daily_group.avg_price_by_column()
 median_price = daily_group.median_by_column()
-number_of_houses_for_sale_per_day = daily_group.count_houses_for_sale()
+number_of_houses_for_sale_per_day = daily_group.count_houses_for_sale().iloc[1:]
 
 daily_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='D') 
 avg_price_per_meter_by_day = daily_group_per_meter.avg_price_by_column()
@@ -71,7 +71,7 @@ median_price_per_meter = daily_group_per_meter.median_by_column()
 weekly_group = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price', frequency='W')
 avg_price_by_week = weekly_group.avg_price_by_column()
 median_price_by_week = weekly_group.median_by_column()
-number_of_houses_for_sale_per_week = weekly_group.count_houses_for_sale()
+number_of_houses_for_sale_per_week = weekly_group.count_houses_for_sale().iloc[1:]
 
 weekly_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='W')
 avg_price_per_meter_by_week = weekly_group_per_meter.avg_price_by_column()
@@ -81,7 +81,7 @@ median_price_per_meter_by_week = weekly_group_per_meter.median_by_column()
 month_group = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price', frequency='M') 
 avg_price_by_month = month_group.avg_price_by_column()
 median_price_by_month = month_group.median_by_column()
-number_of_houses_for_sale_per_month = month_group.count_houses_for_sale()
+number_of_houses_for_sale_per_month = month_group.count_houses_for_sale().iloc[1:]
 
 month_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='M')
 avg_price_per_meter_by_month = month_group_per_meter.avg_price_by_column()
@@ -99,7 +99,7 @@ number_houses_sold_per_month = group_sold_by_month.count_houses_sold()
 # average price
 daily_avg_price_houses_sold = group_sold_by_day.avg_price_houses_sold()
 weekly_avg_price_houses_sold = group_sold_by_week.avg_price_houses_sold()
-monhly_avg_price_houses_sold = group_sold_by_month.avg_price_houses_sold()
+monthly_avg_price_houses_sold = group_sold_by_month.avg_price_houses_sold()
 # median price
 daily_median_price_houses_sold = group_sold_by_day.median_price_houses_sold()
 weekly_median_price_houses_sold  = group_sold_by_week.median_price_houses_sold()
@@ -109,11 +109,14 @@ monthly_median_price_houses_sold = group_sold_by_month.median_price_houses_sold(
 daily_group_per_meter_houses_sold = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price_per_meter', frequency='D')
 weekly_group_per_meter_houses_sold = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price_per_meter', frequency='W')
 monthly_group_per_meter_houses_sold = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price_per_meter', frequency='M')
-# average price per meter 
+# average price per meter , median price per meter 
 daily_avg_price_per_meter_houses_sold = daily_group_per_meter_houses_sold.avg_price_houses_sold()
 weekly_avg_price_per_meter_houses_sold = weekly_group_per_meter_houses_sold.avg_price_houses_sold()
 monthly_avg_price_per_meter_houses_sold = monthly_group_per_meter_houses_sold.avg_price_houses_sold()
 
+daily_median_price_per_meter_houses_sold = daily_group_per_meter_houses_sold.median_price_houses_sold()
+weekly_median_price_per_meter_houses_sold = weekly_group_per_meter_houses_sold.median_price_houses_sold()
+monthly_median_price_per_meter_houses_sold = monthly_group_per_meter_houses_sold.median_price_houses_sold()
 # Prices of houses sold on particular days  
 group_sold_by_day.df['date_of_sale'] = pd.to_datetime(group_sold_by_day.df['last_seen_date']) 
 older_than = pd.Timestamp.now() - pd.Timedelta(days=1)
@@ -133,7 +136,7 @@ app.layout = html.Div(children=[
     
     dcc.Graph(
         id='graph1',
-        figure=px.line(avg_price_by_day , x="datetime", y="price")
+        figure=px.bar(avg_price_by_day , x="datetime", y="price")
 
     ), 
 
@@ -141,21 +144,21 @@ app.layout = html.Div(children=[
 
     dcc.Graph(
         id='graph2',
-        figure=px.line(avg_price_per_meter_by_day, x="datetime", y="price_per_meter")
+        figure=px.bar(avg_price_per_meter_by_day, x="datetime", y="price_per_meter")
     ),
 
     html.P('Median daily price of houses for sale'),
 
     dcc.Graph(
         id='graph3',
-        figure=px.line(median_price, x="datetime", y="price")
+        figure=px.bar(median_price, x="datetime", y="price")
     ),
 
     html.P('Median daily price per meter of houses for sale'),
 
     dcc.Graph(
         id='graph4',
-        figure=px.line(median_price_per_meter, x="datetime", y="price_per_meter")
+        figure=px.bar(median_price_per_meter, x="datetime", y="price_per_meter")
     ),
 
     html.P('Average weekly price of houses for sale'),
@@ -237,29 +240,75 @@ app.layout = html.Div(children=[
     ),
 
     
-    html.P('Price of houses sold per day'), 
+    html.P('Daily price of houses sold.'), 
 
     dcc.Graph(
         id='graph16',
         figure=px.bar(sorted_df, x="last_seen_date", y="price", color="url")
         ),
 
-    html.P('Price_per_meter of houses sold per day'), 
+    html.P('Daily price_per_meter of houses sold.'), 
 
     dcc.Graph(
         id='graph17',
         figure=px.bar(sorted_df, x="last_seen_date", y="price_per_meter", color="url")
         ),
-    
-    html.P('Daily weekly price of houses sold'), 
+
+    html.P('Weekly average price of houses sold.'), 
 
     dcc.Graph(
         id='graph18',
         figure=px.line(weekly_avg_price_houses_sold, x="date_of_sale", y="price")
         ),
-   
     
+    html.P('Weekly average price per meter of houses sold'), 
 
+    dcc.Graph(
+        id='graph19',
+        figure=px.line(weekly_avg_price_per_meter_houses_sold, x="date_of_sale", y="price_per_meter")
+        ),
+
+    html.P('Monthly average price of houses sold.'), 
+
+    dcc.Graph(
+        id='graph20',
+        figure=px.line(monthly_avg_price_houses_sold, x="date_of_sale", y="price")
+        ),
+   
+   html.P('Monthly average price per meter of houses sold.'), 
+
+    dcc.Graph(
+        id='graph21',
+        figure=px.line(monthly_avg_price_per_meter_houses_sold, x="date_of_sale", y="price_per_meter")
+        ),
+    
+    html.P('Daily median price  of houses sold'), 
+
+    dcc.Graph(
+        id='graph22',
+        figure=px.line(daily_median_price_houses_sold, x="date_of_sale", y="price")
+        ),
+
+    html.P('Daily median price per meter of houses sold'), 
+
+    dcc.Graph(
+        id='graph23',
+        figure=px.bar(daily_median_price_per_meter_houses_sold, x="date_of_sale", y="price_per_meter")
+        ),
+
+    html.P('Weekly median price per meter of houses sold'), 
+
+    dcc.Graph(
+        id='graph24',
+        figure=px.bar(weekly_median_price_per_meter_houses_sold, x="date_of_sale", y="price_per_meter")
+        ),
+
+    html.P('Monthly median price per meter of houses sold'), 
+
+    dcc.Graph(
+        id='graph25',
+        figure=px.line(monthly_median_price_per_meter_houses_sold, x="date_of_sale", y="price_per_meter")
+        ),
    ]   
 )
  
