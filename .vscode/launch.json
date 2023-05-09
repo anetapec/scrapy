@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+    
         {
             "name": "Python: scrapy",
             "type": "python",
@@ -14,6 +15,18 @@
             "args": [
                 "crawl", 
                 "tricity"
+            ]
+        }, 
+        {
+            "name": "Python: flats",
+            "type": "python",
+            "request": "launch",
+            "module": "scrapy",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/flats/flatsscraper/flatsscraper",
+            "args": [
+                "crawl", 
+                "flatsspiders"
             ]
         }, 
         {
