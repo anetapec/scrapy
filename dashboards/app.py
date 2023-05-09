@@ -26,15 +26,6 @@ class DataSource:
         self.df[self.new_column_name] = pd.to_datetime(self.df[self.column_name]) 
         groupped_date_by_freq= self.df.set_index(self.new_column_name).groupby(pd.Grouper(freq = self.frequency)) 
         return groupped_date_by_freq
-    '''
-    def skip_the_column_first_scraping(self):
-        self.df[self.new_column_name] = pd.to_datetime(self.df[self.column_name]) 
-        self.df[self.column_name] = datetime.strptime(self.column_name, "%Y-%m-%d %H:%M:%S")
-        timestamp_column = datetime.timestamp(self.column_name[1])
-        skip = self.df[(self.df[self.column_name] > timestamp_column)]
-        groupped_date_by_freq= skip.set_index(self.new_column_name).groupby(pd.Grouper(freq = self.frequency)) 
-        return groupped_date_by_freq
-    '''
 
     def avg_price_by_column(self):
         return self.groupped_date()[self.column_by_count].mean().to_frame().reset_index()
@@ -60,17 +51,7 @@ class DataSource:
     
     def median_price_houses_sold(self):
         return self.skip_unsold_houses()[self.column_by_count].median().to_frame().reset_index()
-''''    
-date_string = "2023-04-02 20:22:57"
 
-date_column_name = datetime.strptime(date_string, "%Y-%m-%d %H:%M:%S")
-
-timestamp = datetime.timestamp(date_column_name)
-
-print(timestamp)
-df[1:]
-df.iloc[0:3,0:3]
-'''
 
 # HOUSES FOR SALE
 

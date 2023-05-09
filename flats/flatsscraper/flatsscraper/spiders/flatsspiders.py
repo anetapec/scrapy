@@ -6,8 +6,7 @@ import re
 class FlatsspidersSpider(scrapy.Spider):
     name = "flatsspiders"
     allowed_domains = ["dom.trojmiasto.pl"]
-    start_urls = ["https://dom.trojmiasto.pl/nieruchomosci-rynek-wtorny/"
-                  "e1i,27_60_17_14_13_18_16_24_19_25_6_15_61_20_21,ii,1,qi,45_,wi,100.html"]
+    start_urls = ["https://dom.trojmiasto.pl/nieruchomosci-rynek-wtorny/e1i,27_60_17_14_13_18_16_24_19_25_6_15_61_20_21,ii,1,qi,45_,wi,100.html"]
 
     def parse(self, response):
         flats = response.css(".ogloszeniaList__item")
@@ -15,7 +14,7 @@ class FlatsspidersSpider(scrapy.Spider):
         for flat in flats:
             item = FlatItem()
             try:
-                item['price'] = int(flat.css("p.ogloszeniaList__price::text").get())
+                item['price'] = flat.css("p.ogloszeniaList__price::text").get()
                 item['url'] = flat.css("a.ogloszeniaList__img").attrib["href"]
                 item['numbers_of_rooms'] = flat.css(".ogloszeniaList__detail.button.button--label.button--"
                                                     "fourth:nth-child(2)::text").get()  

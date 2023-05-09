@@ -64,12 +64,12 @@ RANDOMIZE_DOWNLOAD_DELAY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    "flatsscraper.pipelines.FlatsscraperPipeline": 300
+    "flatsscraper.pipelines.MongoDBPipeline": 300
 }
 
-#mongodb_uri = 'mongodb://localhost:27017' 
-#mongodb_db = 'tricity'
-#colection_name = 'flats'
+mongodb_uri = 'mongodb://localhost:27017' 
+mongodb_db = 'tricity'
+colection_name = 'flats'
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
