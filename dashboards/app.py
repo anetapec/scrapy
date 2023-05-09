@@ -286,7 +286,7 @@ app.layout = html.Div(children=[
 
     dcc.Graph(
         id='graph22',
-        figure=px.line(daily_median_price_houses_sold, x="date_of_sale", y="price")
+        figure=px.bar(daily_median_price_houses_sold, x="date_of_sale", y="price")
         ),
 
     html.P('Daily median price per meter of houses sold'), 
