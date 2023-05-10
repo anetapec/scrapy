@@ -25,7 +25,7 @@ class MongoDBPipeline:
         self.client.close()
 
     def process_item(self, item, spider):
-        item['price_per_meter'] = str(round(float(item['price']) / float(item['area']), 2))
+        item['price_per_meter'] = (round(float(item['price']) / float(item['area']), 2))
         item['last_seen_date'] = self.scrapping_date
         item['hash'] = self.set_hash(item)
         filter_dict = {'hash': item['hash']} 
