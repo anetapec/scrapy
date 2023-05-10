@@ -25,7 +25,7 @@ class MongoDBPipeline:
         self.client.close()
 
     def process_item(self, item, spider):
-        #item['price_per_meter'] = (item['price']) / (item['area'])
+        item['price_per_meter'] = str(round(float(item['price']) / float(item['area']), 2))
         item['last_seen_date'] = self.scrapping_date
         item['hash'] = self.set_hash(item)
         filter_dict = {'hash': item['hash']} 
@@ -40,18 +40,3 @@ class MongoDBPipeline:
         
         return item
 
-'''    
-
-from itemadapter import ItemAdapter
-
-
-class FlatsscraperPipeline:
-    
-    def __init__(self):
-        pass
-
-    def process_item(self, item, spider):
-
-        
-        return item
-'''
