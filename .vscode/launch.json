@@ -35,6 +35,13 @@
             "request": "launch",
             "program": "${workspaceFolder}/dashboards/app.py",
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: work",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/dashboards/workship.py",
+            "console": "integratedTerminal"
         }
         
     ]
