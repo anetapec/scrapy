@@ -62,6 +62,7 @@ avg_price_by_day = daily_group.avg_price_by_column()
 median_price = daily_group.median_by_column()
 number_of_houses_for_sale_per_day = daily_group.count_houses_for_sale().iloc[1:]
 
+
 daily_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='D') 
 avg_price_per_meter_by_day = daily_group_per_meter.avg_price_by_column()
 median_price_per_meter = daily_group_per_meter.median_by_column()
@@ -165,28 +166,28 @@ app.layout = html.Div(children=[
 
     dcc.Graph(
         id='graph5',
-        figure=px.line(avg_price_by_week, x="datetime", y="price")
+        figure=px.bar(avg_price_by_week, x="datetime", y="price")
     ),
 
     html.P('Average weekly price per meter of houses for sale'),
 
     dcc.Graph(
         id='graph6',
-        figure=px.line(avg_price_per_meter_by_week, x="datetime", y="price_per_meter")
+        figure=px.bar(avg_price_per_meter_by_week, x="datetime", y="price_per_meter")
     ),
 
     html.P('Median weekly price of houses for sale'),
 
     dcc.Graph(
         id='graph7',
-        figure=px.line(median_price_by_week , x="datetime", y="price")
+        figure=px.bar(median_price_by_week , x="datetime", y="price")
     ),
 
     html.P('Median weekly price per meter of houses for sale'),
 
     dcc.Graph(
         id='graph8',
-        figure=px.line(median_price_per_meter_by_week , x="datetime", y="price_per_meter")
+        figure=px.bar(median_price_per_meter_by_week , x="datetime", y="price_per_meter")
     ),
 
 
@@ -194,49 +195,49 @@ app.layout = html.Div(children=[
 
     dcc.Graph(
         id='graph9',
-        figure=px.line(avg_price_by_month, x="datetime", y="price")
+        figure=px.bar(avg_price_by_month, x="datetime", y="price")
     ), 
 
     html.P('Average monthly price per meter of houses for sale'),
 
     dcc.Graph(
         id='graph10',
-        figure=px.line(avg_price_per_meter_by_month, x="datetime", y="price_per_meter")
+        figure=px.bar(avg_price_per_meter_by_month, x="datetime", y="price_per_meter")
     ),   
 
     html.P('Median monthly price of houses for sale'),
 
     dcc.Graph(
         id='graph11',
-        figure=px.line(median_price_by_month , x="datetime", y="price")
+        figure=px.bar(median_price_by_month , x="datetime", y="price")
     ),   
 
     html.P('Median monthly price per meter of houses for sale'),
 
     dcc.Graph(
         id='graph12',
-        figure=px.line(median_price_per_meter_by_month , x="datetime", y="price_per_meter")
+        figure=px.bar(median_price_per_meter_by_month , x="datetime", y="price_per_meter")
     ),  
 
     html.P('Number of houses for sale per day'),
 
     dcc.Graph(
         id='graph13',
-        figure=px.line(number_of_houses_for_sale_per_day , x="datetime", y="scrapping_date")
+        figure=px.bar(number_of_houses_for_sale_per_day , x="datetime", y="scrapping_date")
     ),
 
     html.P('Number of houses for sale per week'), # => trzeba usunąć datę scrapowania wszystkich domów
 
     dcc.Graph(
         id='graph14',
-        figure=px.line(number_of_houses_for_sale_per_week , x="datetime", y="scrapping_date")
+        figure=px.bar(number_of_houses_for_sale_per_week , x="datetime", y="scrapping_date")
     ),
 
     html.P('Number of houses for sale per month'), # => trzeba usunąć datę scrapowania wszystkich domów
 
     dcc.Graph(
         id='graph15',
-        figure=px.line(number_of_houses_for_sale_per_month , x="datetime", y="scrapping_date")
+        figure=px.bar(number_of_houses_for_sale_per_month , x="datetime", y="scrapping_date")
     ),
 
     
@@ -258,28 +259,28 @@ app.layout = html.Div(children=[
 
     dcc.Graph(
         id='graph18',
-        figure=px.line(weekly_avg_price_houses_sold, x="date_of_sale", y="price")
+        figure=px.bar(weekly_avg_price_houses_sold, x="date_of_sale", y="price")
         ),
     
     html.P('Weekly average price per meter of houses sold'), 
 
     dcc.Graph(
         id='graph19',
-        figure=px.line(weekly_avg_price_per_meter_houses_sold, x="date_of_sale", y="price_per_meter")
+        figure=px.bar(weekly_avg_price_per_meter_houses_sold, x="date_of_sale", y="price_per_meter")
         ),
 
     html.P('Monthly average price of houses sold.'), 
 
     dcc.Graph(
         id='graph20',
-        figure=px.line(monthly_avg_price_houses_sold, x="date_of_sale", y="price")
+        figure=px.bar(monthly_avg_price_houses_sold, x="date_of_sale", y="price")
         ),
    
    html.P('Monthly average price per meter of houses sold.'), 
 
     dcc.Graph(
         id='graph21',
-        figure=px.line(monthly_avg_price_per_meter_houses_sold, x="date_of_sale", y="price_per_meter")
+        figure=px.bar(monthly_avg_price_per_meter_houses_sold, x="date_of_sale", y="price_per_meter")
         ),
     
     html.P('Daily median price  of houses sold'), 
@@ -307,7 +308,7 @@ app.layout = html.Div(children=[
 
     dcc.Graph(
         id='graph25',
-        figure=px.line(monthly_median_price_per_meter_houses_sold, x="date_of_sale", y="price_per_meter")
+        figure=px.bar(monthly_median_price_per_meter_houses_sold, x="date_of_sale", y="price_per_meter")
         ),
    ]   
 )
