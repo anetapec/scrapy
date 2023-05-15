@@ -39,6 +39,7 @@ class House:
         groupped_date_by_freq=self.df.set_index(self.new_column_name).groupby(pd.Grouper(freq = self.frequency)) 
         return groupped_date_by_freq
     
+ 
     def avg_price_by_column(self):
         return self.groupped_date()[self.column_by_count].mean().to_frame().reset_index()
 
@@ -53,8 +54,8 @@ houses = House(new_column_name='datetime', column_name='scrapping_date', column_
 #print(daily_group)
 collection_houses = houses.load_collection('houses')
 print(collection_houses)  # ładuje kolekcje
-#collection_houses.to_csv('avg.csv')
-print(dict(collection_houses))
+
+
 #fff = collection_houses()
 #print(fff)
 
@@ -62,8 +63,8 @@ print(dict(collection_houses))
 
 
 
-avg_price_by_day  = houses.avg_price_by_column()
-print(avg_price_by_day)
+
+# print(avg_price_by_day)
 
     
 
