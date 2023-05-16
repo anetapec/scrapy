@@ -20,7 +20,7 @@ class DataSource:
         db = client['tricity']
         collection = db[name_collection]
         df = pd.DataFrame(list(collection.find()))
-        return df     #  => otrzymujemy df z danej kolekcji 
+        return df     
     
     def groupped_date(self): 
         self.df[self.new_column_name] = pd.to_datetime(self.df[self.column_name]) 
@@ -300,21 +300,21 @@ app.layout = html.Div(children=[
         figure=px.bar(number_of_houses_for_sale_per_day , x="datetime", y="scrapping_date")
     ),
 
-    html.P('Number of houses for sale per week'), # => trzeba usunąć datę scrapowania wszystkich domów
+    html.P('Number of houses for sale per week'), 
 
     dcc.Graph(
         id='graph14',
         figure=px.bar(number_of_houses_for_sale_per_week , x="datetime", y="scrapping_date")
     ),
 
-    html.P('Number of houses for sale per month'), # => trzeba usunąć datę scrapowania wszystkich domów
+    html.P('Number of houses for sale per month'), 
 
     dcc.Graph(
         id='graph15',
         figure=px.bar(number_of_houses_for_sale_per_month , x="datetime", y="scrapping_date")
     ),
 
-    
+    html.H3('Analysis of the prices of houses sold'),
     html.P('Daily price of houses sold.'), 
 
     dcc.Graph(
@@ -389,8 +389,8 @@ app.layout = html.Div(children=[
 
 ###################################################################################################################
 
-
-    
+    html.H1('Real estate prices flats and sales report in Gdynia'),
+    html.H3('Analysis of the prices of flats put up for sale'),
     html.P('Average daily price of flats for sale'), 
     
     dcc.Graph(
@@ -402,7 +402,7 @@ app.layout = html.Div(children=[
     html.P('Average daily price per meter of flats for sale'),
 
     dcc.Graph(
-        id='graph26',
+        id='graph26-1',
         figure=px.bar(avg_price_per_meter_flats_by_day, x="datetime", y="price_per_meter")
     ),
 
@@ -498,7 +498,7 @@ app.layout = html.Div(children=[
         figure=px.bar(number_of_flats_for_sale_per_month , x="datetime", y="scrapping_date")
     ),
 
-    
+    html.H3('Analysis of the prices of flats sold'),
     html.P('Daily price of flats sold.'), 
 
     dcc.Graph(
