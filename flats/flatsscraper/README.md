@@ -48,5 +48,8 @@ shell = ipython
 fetch('https://dom.trojmiasto.pl/nieruchomosci-rynek-wtorny/e1i,27_60_17_14_13_18_16_24_19_25_6_15_61_20_21,ii,1,qi,45_,wi,100.html')
 
 ```
-
+## Run spiders 
+```bash
+scrapy crawl flatsspiders
+```
 
