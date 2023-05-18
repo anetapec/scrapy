@@ -18,12 +18,12 @@
             ]
         }, 
         {
-            "name": "Python: flats",
+            "name": "Python: scrapy",
             "type": "python",
             "request": "launch",
             "module": "scrapy",
             "justMyCode": true,
-            "cwd": "${workspaceFolder}/flats/flatsscraper/flatsscraper",
+            "cwd": "${workspaceFolder}/flatsscraper",
             "args": [
                 "crawl", 
                 "flatsspiders"

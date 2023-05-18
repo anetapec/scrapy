@@ -413,7 +413,7 @@ app.layout = html.Div(children=[
 
     dcc.Graph(
         id='graph34',
-        figure=px.bar(avg_price_per_meter_flats_by_month, x="datetime", y="price_per_meter")
+        figure=px.bar(avg_price_per_meter_flats_by_month, x="datetime" , y="price_per_meter")
     ),   
 
     html.P('Median monthly price of flats for sale'),
