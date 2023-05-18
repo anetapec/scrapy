@@ -1,5 +1,5 @@
 import scrapy
-from flatsscraper.items import FlatItem
+from tricity.items import HouseItem
 import re
 
 
@@ -12,7 +12,7 @@ class FlatsspidersSpider(scrapy.Spider):
         flats = response.css(".ogloszeniaList__item")
         #flats = response.css(".ogloszeniaList.ogloszeniaList__item")
         for flat in flats:
-            item = FlatItem()
+            item = HouseItem()
             try:
                 item['price'] = int(re.sub("[^0-9]", "", flat.css("p.ogloszeniaList__price::text").get()))
                 item['url'] = flat.css("a.ogloszeniaList__img").attrib["href"]
