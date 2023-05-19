@@ -9,7 +9,7 @@ class HousesspiderSpider(scrapy.Spider):
     allowed_domains = ['ogloszenia.trojmiasto.pl']
     start_urls = ['https://ogloszenia.trojmiasto.pl/nieruchomosci/dom/gdynia/']
 
-    
+    custom_settings = { "collection": "houses"}
     
     def parse(self, response):
         # Parse each houses 
