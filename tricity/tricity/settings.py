@@ -67,7 +67,7 @@ ITEM_PIPELINES = {'tricity.pipelines.MongoDBPipeline': 300}
 
 mongodb_uri = 'mongodb://localhost:27017' 
 mongodb_db = 'tricity'
-colection_name = 'houses'
+
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True

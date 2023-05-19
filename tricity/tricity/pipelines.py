@@ -16,10 +16,11 @@ class MongoDBPipeline:
         return now
 
     def open_spider(self, spider):
+        spider_mongo_collection = spider.custom_settings["collection"]
         self.scrapping_date = self.set_scrapping_date()
         self.client = pymongo.MongoClient(settings.mongodb_uri)
         db = self.client[settings.mongodb_db]
-        self.collection = db[settings.colection_name]
+        self.collection = db[spider_mongo_collection]
 
     def close_spider(self, spider):
         self.client.close()
