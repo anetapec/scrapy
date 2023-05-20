@@ -334,9 +334,12 @@ app.layout = html.Div(children=[
 
     dcc.Graph(
         id='graph21',
-        figure=px.bar(monthly_avg_price_per_meter_houses_sold, x="date_of_sale", y="price_per_meter")
+        figure=px.bar(monthly_avg_price_per_meter_houses_sold, x="date_of_sale", y="price_per_meter",
+                      labels={"date_of_sale": "Date",
+                            "price_per_meter": "Average price per meter of houses"},
+                      hover_data={"date_of_sale": "|%B %d , %Y"},  title='Monthly average price per meter of houses sold.'),
         ),
-    
+        
     html.P('Daily median price  of houses sold'), 
 
     dcc.Graph(
