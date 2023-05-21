@@ -174,10 +174,10 @@ app.layout = html.Div(children=[
     
     
 
-    html.P('Monthly median price of houses sold'), 
+    #html.P('Monthly median price of houses sold'), 
     
     dcc.Graph(
-        id='graph25-1',
+       
         figure=fig_monthly_median_price_houses_sold
     ),
     
