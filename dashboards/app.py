@@ -151,6 +151,18 @@ older_than = pd.Timestamp.now() - pd.Timedelta(days=1)
 flats_sold = flats_group_sold_by_day.df[(flats_group_sold_by_day.df['date_of_sale'] <=  older_than)] #per day
 flats_sorted_df = flats_sold.sort_values(by='last_seen_date')
 
+fig1 = px.bar(monthly_median_price_houses_sold, x="date_of_sale", y="price", 
+              labels={"date_of_sale": "Date", "price": "Median price of houses"},
+              hover_data={"date_of_sale": "|%B %d, %Y"},
+              title='Monthly median price of houses sold.'
+              )
+
+fig1.update_xaxes(
+    
+    dtick="M1",
+    tickformat="%b\n%Y")
+
+#fig1.show() 
 
 app = Dash(__name__)
 
@@ -159,6 +171,15 @@ app.layout = html.Div(children=[
     html.H1('Real estate prices and sales report in Gdynia'),
 
     html.H3('Analysis of the prices of houses put up for sale'),
+    
+    
+
+    html.P('Monthly median price of houses sold'), 
+    
+    dcc.Graph(
+        id='graph25-1',
+        figure=fig1
+    ),
     
     html.P('Average daily price of houses for sale'), 
     
@@ -170,6 +191,7 @@ app.layout = html.Div(children=[
                             
 
     ), 
+
 
     html.P('Average daily price per meter of houses for sale'),
 
@@ -367,6 +389,7 @@ app.layout = html.Div(children=[
         id='graph25',
         figure=px.bar(monthly_median_price_per_meter_houses_sold, x="date_of_sale", y="price_per_meter")
         ),
+
 
 
 
