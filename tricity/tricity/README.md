@@ -50,6 +50,7 @@ fetch('https://dom.trojmiasto.pl/nieruchomosci-rynek-wtorny/e1i,27_60_17_14_13_1
 ```
 ## Run spiders 
 ```bash
+scrapy crawl tricity
 scrapy crawl flatsspiders
 ```
 
