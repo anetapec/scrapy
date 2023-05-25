@@ -42,7 +42,13 @@
             "request": "launch",
             "program": "${workspaceFolder}/dashboards/workship.py",
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: email",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/email",
+            "console": "integratedTerminal"
         }
-        
     ]
 }
