@@ -1,2 +1,5 @@
 persistence:
   enabled: false
+
+image:
+  tag: 6.0.6
