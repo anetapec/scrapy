@@ -24,18 +24,21 @@ docker run -ti --add-host=mongoservice:172.17.0.1 tricityserver:0.0.0 sh
 cd ./k8s/charts/
 helm upgrade mongodb mongodb --namespace mongodb --install --create-namespace
 ```
-### Starting minikube cluster
 
+### CNI for Minikube prerequisite
+```bash
+curl -LO cni.tgz https://github.com/containernetworking/plugins/releases/download/v1.3.0/cni-plugins-linux-amd64-v1.3.0.tgz
+sudo mkdir -p /opt/cni/bin
+sudo mv cni.tgz /opt/cni/bin
+sudo tar zxvf cni.tgz
+```
+
+### Starting minikube cluster
 ```bash
 export CHANGE_MINIKUBE_NONE_USER=true
-sudo -E minikube start --driver=none --driver=none --network-plugin='' --cni=''
-
-
+sudo sysctl fs.protected_regular=0
+sudo -E minikube start --driver=none --driver=none
 
 ```
-kubectl taint nodes --all node.kubernetes.io/not-ready:NoSchedule-
 
-CNI_VERSION="v0.8.2"
-ARCH="amd64"
-sudo mkdir -p /opt/cni/bin
-curl -L "https://github.com/containernetworking/plugins/releases/download/v1.3.0/cni-plugins-linux-amd64-v1.3.0.tgz | sudo tar
+
