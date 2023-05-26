@@ -16,7 +16,7 @@ contents2 = """<h1>This is message with HTML.</h1>
 <b> This is bold text. </b>
 """
 
-file = "password.txt"
+file = "avg.csv"
 
 message = MIMEMultipart()
 message["From"] = sender
