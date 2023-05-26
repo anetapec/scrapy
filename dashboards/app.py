@@ -199,13 +199,68 @@ fig_monthly_median_price_per_meter_houses_sold = px.bar(monthly_median_price_per
               title='Monthly median price per meter of houses sold.') 
 
 
-#fig_number_houses_sold_per_month = px.bar(number_houses_sold_per_month,  )
+fig_number_houses_sold_per_month = px.bar(number_houses_sold_per_month, x="date_of_sale", y="last_seen_date", 
+              labels={"date_of_sale": "Date", "last_seen_date": "Number of houses sold"},
+              hover_data={"date_of_sale": "|%B %d, %Y"},
+              title='Number of houses sold per month.') 
 
+########################################################################
+
+fig_avg_price_flats_by_month = px.bar(avg_price_flats_by_month, x="datetime", y="price",
+              labels={"datetime": "Date", "price": "Average price of flats"},
+              hover_data={"datetime": "|%B %d, %Y"},
+              title='Average monthly price of flats for sale') 
+
+fig_avg_price_per_meter_flats_by_month = px.bar(avg_price_per_meter_flats_by_month, x="datetime" , y="price_per_meter",
+              labels={"datetime": "Date", "price_per_meter": "Average price per meter of flats"},
+              hover_data={"datetime": "|%B %d, %Y"},
+              title='Average monthly price per meter of flats for sale') 
+
+fig_median_price_flats_by_month = figure=px.bar(median_price_flats_by_month , x="datetime", y="price", 
+              labels={"datetime": "Date", "price": "Median price of flats"},
+              hover_data={"datetime": "|%B %d, %Y"},
+              title='Median monthly price of flats for sale') 
+
+fig_median_price_per_meter_flats_by_month = px.bar(median_price_per_meter_flats_by_month , x="datetime", y="price_per_meter",
+              labels={"datetime": "Date", "price_per_meter": "Median price per meter of flats"},
+              hover_data={"datetime": "|%B %d, %Y"},
+              title='Median monthly price per meter of flats for sale') 
+
+fig_number_of_flats_for_sale_per_month = px.bar(number_of_flats_for_sale_per_month , x="datetime", y="scrapping_date",
+              labels={"datetime": "Date","scrapping_date": "Number of flat for sale"},
+              hover_data={"datetime": "|%B %d, %Y"},
+              title='Number of flats for sale per month')
+
+fig_monthly_avg_price_flats_sold = figure=px.bar(monthly_avg_price_flats_sold, x="date_of_sale", y="price",
+              labels={"date_of_sale": "Date", "price": "Average price of flats"},
+              hover_data={"date_of_sale": "|%B %d, %Y"},
+              title='Monthly average price of flats sold.')  
+
+fig_monthly_avg_price_per_meter_flats_sold = px.bar(monthly_avg_price_per_meter_flats_sold, x="date_of_sale", y="price_per_meter",
+              labels={"date_of_sale": "Date", "price_per_meter": "Average price per meter of flats"},
+              hover_data={"date_of_sale": "|%B %d, %Y"},
+              title='Monthly average price per meter of flats sold.')  
+
+fig_monthly_median_price_flats_sold = px.bar(monthly_median_price_flats_sold, x="date_of_sale", y="price", 
+              labels={"date_of_sale": "Date", "price": "Average price of flats"},
+              hover_data={"date_of_sale": "|%B %d, %Y"},
+              title='Monthly median price of flats sold.') 
+
+
+fig_monthly_median_price_per_meter_flats_sold = px.bar(monthly_median_price_per_meter_flats_sold, x="date_of_sale", y="price_per_meter",
+              labels={"date_of_sale": "Date", "price_per_meter": "Median price per meter of flats"},
+              hover_data={"date_of_sale": "|%B %d, %Y"},
+              title='Monthly median price per meter of flats sold.')  
+ 
 
 
 figures = [fig_avg_price_by_month, fig_avg_price_per_meter_by_month, fig_median_price_by_month,
            fig_median_price_per_meter_by_month, fig_number_of_houses_for_sale_per_month, fig_monthly_avg_price_houses_sold, 
-           fig_monthly_avg_price_per_meter_houses_sold ,fig_monthly_median_price_houses_sold, fig_monthly_median_price_per_meter_houses_sold]
+           fig_monthly_avg_price_per_meter_houses_sold ,fig_monthly_median_price_houses_sold, 
+           fig_monthly_median_price_per_meter_houses_sold, fig_number_houses_sold_per_month, fig_avg_price_flats_by_month, fig_avg_price_per_meter_flats_by_month,
+           fig_median_price_flats_by_month, fig_median_price_per_meter_flats_by_month, fig_number_of_flats_for_sale_per_month,
+           fig_monthly_avg_price_flats_sold,fig_monthly_avg_price_per_meter_flats_sold, fig_monthly_median_price_flats_sold,
+           fig_monthly_median_price_per_meter_flats_sold]
 
 for figur in figures:
     figur.update_xaxes(
@@ -223,106 +278,85 @@ app.layout = html.Div(children=[
     dcc.Graph(
         id='graph1',
         figure=px.bar(avg_price_by_day , x="datetime", y="price",
-                      labels={"datetime": "Date",
-                            "price": "Average price of houses"})
-    ), 
+                      labels={"datetime": "Date", "price": "Average price of houses"})), 
 
     html.P('Average daily price per meter of houses for sale'),
     dcc.Graph(
         id='graph2',
         figure=px.bar(avg_price_per_meter_by_day, x="datetime", y="price_per_meter",
-                      labels={"datetime": "Date",
-                            "price_per_meter": "Average price per meter of houses"})
-    ),
+                      labels={"datetime": "Date", "price_per_meter": "Average price per meter of houses"})),
 
     html.P('Median daily price of houses for sale'),
     dcc.Graph(
         id='graph3',
         figure=px.bar(median_price, x="datetime", y="price",
-                      labels={"datetime": "Date",
-                            "price": "Median price of houses"})
-    ),
+                      labels={"datetime": "Date", "price": "Median price of houses"})),
 
     html.P('Median daily price per meter of houses for sale'),
-
     dcc.Graph(
         id='graph4',
         figure=px.bar(median_price_per_meter, x="datetime", y="price_per_meter",
-                      labels={"datetime": "Date",
-                            "price_per_meter": "Median price per meter of houses"})
-    ),
+                      labels={"datetime": "Date", "price_per_meter": "Median price per meter of houses"})),
 
     html.P('Average weekly price of houses for sale'),
     dcc.Graph(
         id='graph5',
         figure=px.bar(avg_price_by_week, x="datetime", y="price",
-                      labels={"datetime": "Date",
-                            "price": "Average price of houses"})
-    ),
+                      labels={"datetime": "Date", "price": "Average price of houses"})),
 
     html.P('Average weekly price per meter of houses for sale'),
     dcc.Graph(
         id='graph6',
         figure=px.bar(avg_price_per_meter_by_week, x="datetime", y="price_per_meter",
                       labels={"datetime": "Date",
-                            "price_per_meter": "Average price per meter of houses"})
-    ),
+                            "price_per_meter": "Average price per meter of houses"})),
 
     html.P('Median weekly price of houses for sale'),
     dcc.Graph(
         id='graph7',
         figure=px.bar(median_price_by_week , x="datetime", y="price",
-                      labels={"datetime": "Date",
-                            "price": "Median price of houses"})
-    ),
+                      labels={"datetime": "Date", "price": "Median price of houses"})),
 
     html.P('Median weekly price per meter of houses for sale'),
     dcc.Graph(
         id='graph8',
         figure=px.bar(median_price_per_meter_by_week , x="datetime", y="price_per_meter",
-                      labels={"datetime": "Date",
-                            "price_per_meter": "Median price per meter of houses"})
-    ),
+                      labels={"datetime": "Date", "price_per_meter": "Median price per meter of houses"})),
 
-
-    #html.P('Average monthly price of houses for sale'),
+    html.P('Average monthly price of houses for sale'),
     dcc.Graph(figure=fig_avg_price_by_month), 
 
-    #html.P('Average monthly price per meter of houses for sale'),
+    html.P('Average monthly price per meter of houses for sale'),
     dcc.Graph(figure=fig_avg_price_per_meter_by_month),   
 
-    #html.P('Median monthly price of houses for sale'),
+    html.P('Median monthly price of houses for sale'),
     dcc.Graph(figure=fig_median_price_by_month),   
 
-    #html.P('Median monthly price per meter of houses for sale'),
+    html.P('Median monthly price per meter of houses for sale'),
     dcc.Graph(figure=fig_median_price_per_meter_by_month), 
     
     html.P('Number of houses for sale per day'),
     dcc.Graph(
         id='graph13',
         figure=px.bar(number_of_houses_for_sale_per_day , x="datetime", y="scrapping_date", 
-                      labels={"datetime": "Date",
-                              "scrapping_date": "Number of houses for sale"})
-    ),
+                      labels={"datetime": "Date", "scrapping_date": "Number of houses for sale"})),
 
     html.P('Number of houses for sale per week'), 
     dcc.Graph(
         id='graph14',
         figure=px.bar(number_of_houses_for_sale_per_week , x="datetime", y="scrapping_date",
-                      labels={"datetime": "Date",
-                            "scrapping_date": "Number of houses for sale"})
-    ),
+                      labels={"datetime": "Date","scrapping_date": "Number of houses for sale"})),
 
-    #html.P('Number of houses for sale per month'), 
+    html.P('Number of houses for sale per month'), 
     dcc.Graph(figure=fig_number_of_houses_for_sale_per_month),
     
     html.Hr(),
     html.H3('Analysis of the prices of houses sold'),
     html.P('Daily price of houses sold.'), 
+    
     dcc.Graph(
         id='graph16',
-        figure=px.bar(sorted_df, x="last_seen_date", y="price", color="url")
-        ),
+        figure=px.bar(sorted_df, x="last_seen_date", y="price", color="url")),
 
     html.P('Daily price_per_meter of houses sold.'), 
     dcc.Graph(
@@ -333,7 +367,8 @@ app.layout = html.Div(children=[
     html.P('Weekly average price of houses sold.'), 
     dcc.Graph(
         id='graph18',
-        figure=px.bar(weekly_avg_price_houses_sold, x="date_of_sale", y="price")
+        figure=px.bar(weekly_avg_price_houses_sold, x="date_of_sale", y="price",
+        )
         ),
     
     html.P('Weekly average price per meter of houses sold'), 
@@ -366,17 +401,21 @@ app.layout = html.Div(children=[
         figure=px.bar(weekly_median_price_per_meter_houses_sold, x="date_of_sale", y="price_per_meter")
         ),
     
-    #html.P('Monthly median price of houses sold'), 
+    html.P('Monthly median price of houses sold'), 
     dcc.Graph(figure=fig_monthly_median_price_houses_sold),
 
-    #html.P('Monthly median price per meter of houses sold'), 
+    html.P('Monthly median price per meter of houses sold'), 
     dcc.Graph(figure=fig_monthly_median_price_per_meter_houses_sold),
+    
+    html.P('Number of houses sold per month.'),
+    dcc.Graph(figure=fig_number_houses_sold_per_month),
 
 ###################################################################################################################
     html.Hr(),
     html.Hr(),
     html.H1('Real estate prices flats and sales report in Gdynia'),
     html.H3('Analysis of the prices of flats put up for sale'),
+    
     html.P('Average daily price of flats for sale'), 
     
     dcc.Graph(
@@ -429,28 +468,16 @@ app.layout = html.Div(children=[
 
 
     html.P('Average monthly price of flats for sale'),
-    dcc.Graph(
-        id='graph33',
-        figure=px.bar(avg_price_flats_by_month, x="datetime", y="price")
-    ), 
+    dcc.Graph(figure=fig_avg_price_flats_by_month), 
 
     html.P('Average monthly price per meter of flats for sale'),
-    dcc.Graph(
-        id='graph34',
-        figure=px.bar(avg_price_per_meter_flats_by_month, x="datetime" , y="price_per_meter")
-    ),   
+    dcc.Graph(figure=fig_avg_price_per_meter_flats_by_month),   
 
     html.P('Median monthly price of flats for sale'),
-    dcc.Graph(
-        id='graph35',
-        figure=px.bar(median_price_flats_by_month , x="datetime", y="price")
-    ),   
+    dcc.Graph(figure=fig_median_price_flats_by_month),   
 
     html.P('Median monthly price per meter of flats for sale'),
-    dcc.Graph(
-        id='graph36',
-        figure=px.bar(median_price_per_meter_flats_by_month , x="datetime", y="price_per_meter")
-    ),  
+    dcc.Graph(figure=fig_median_price_per_meter_flats_by_month),
 
     html.P('Number of flats for sale per day'),
     dcc.Graph(
@@ -469,12 +496,7 @@ app.layout = html.Div(children=[
     ),
 
     html.P('Number of flats for sale per month'), 
-    dcc.Graph(
-        id='graph39',
-        figure=px.bar(number_of_flats_for_sale_per_month , x="datetime", y="scrapping_date",
-                      labels={"datetime": "Date",
-                            "scrapping_date": "Number of flat for sale"})
-    ),
+    dcc.Graph(figure=fig_number_of_flats_for_sale_per_month),
     html.Hr(),
     html.H3('Analysis of the prices of flats sold'),
     html.P('Daily price of flats sold.'), 
@@ -503,16 +525,10 @@ app.layout = html.Div(children=[
         ),
 
     html.P('Monthly average price of flats sold.'), 
-    dcc.Graph(
-        id='graph44',
-        figure=px.bar(monthly_avg_price_flats_sold, x="date_of_sale", y="price")
-        ),
+    dcc.Graph(figure=fig_monthly_avg_price_flats_sold),
    
     html.P('Monthly average price per meter of flats sold.'), 
-    dcc.Graph(
-        id='graph45',
-        figure=px.bar(monthly_avg_price_per_meter_flats_sold, x="date_of_sale", y="price_per_meter")
-        ),
+    dcc.Graph(figure=fig_monthly_avg_price_per_meter_flats_sold),
     
     html.P('Daily median price  of flats sold'), 
     dcc.Graph(
@@ -532,11 +548,11 @@ app.layout = html.Div(children=[
         figure=px.bar(weekly_median_price_per_meter_flats_sold, x="date_of_sale", y="price_per_meter")
         ),
 
+    html.P('Monthly median price of flats sold'), 
+    dcc.Graph(figure=fig_monthly_median_price_flats_sold),
+
     html.P('Monthly median price per meter of flats sold'), 
-    dcc.Graph(
-        id='graph49',
-        figure=px.bar(monthly_median_price_per_meter_flats_sold, x="date_of_sale", y="price_per_meter")
-        ),
+    dcc.Graph(figure=fig_monthly_median_price_per_meter_flats_sold),
 
 
 
