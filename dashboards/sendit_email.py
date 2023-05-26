@@ -10,7 +10,7 @@ sender = 'aneta.gawron85@gmail.com'
 recipient = 'aneta.gawron85@gmail.com'
 password = 'wgyufumaoypulziu'
 #haslo = input("Wprowadz swoje hasło: ")
-subject = "Text e-mail"
+subject = "Email sent a python with attachment"
 contents1 = """Text without Html."""
 contents2 = """<h1>This is message with HTML.</h1>
 <b> This is bold text. </b>
