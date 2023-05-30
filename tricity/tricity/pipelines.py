@@ -2,6 +2,7 @@ import pymongo
 from tricity import settings
 from datetime import datetime
 import hashlib
+import os
 
  
 class MongoDBPipeline:
@@ -18,7 +19,8 @@ class MongoDBPipeline:
     def open_spider(self, spider):
         spider_mongo_collection = spider.custom_settings["collection"]
         self.scrapping_date = self.set_scrapping_date()
-        self.client = pymongo.MongoClient(settings.mongodb_uri)
+        mongo_uri = os.getenv('MONGO_URI',settings.mongodb_uri)
+        self.client = pymongo.MongoClient(mongo_uri)
         db = self.client[settings.mongodb_db]
         self.collection = db[spider_mongo_collection]
 
