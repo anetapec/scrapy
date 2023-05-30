@@ -3,20 +3,21 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import os
+
 
 port = 465
 smtp_serwer = 'smtp.gmail.com'
 sender = 'aneta.gawron85@gmail.com'
 recipient = 'aneta.gawron85@gmail.com'
-password = 'wgyufumaoypulziu'
-#haslo = input("Wprowadz swoje hasło: ")
+password = os.getenv('API_KEY')
 subject = "Email sent a python with attachment"
 contents1 = """Text without Html."""
 contents2 = """<h1>This is message with HTML.</h1>
 <b> This is bold text. </b>
 """
 
-file = "avg.csv"
+file = "/home/aneta/software/repos/scrapy/mails/zalacznik.txt"
 
 message = MIMEMultipart()
 message["From"] = sender
@@ -46,6 +47,3 @@ with smtplib.SMTP_SSL(smtp_serwer, port, context=ssl_connection) as serwer:
     serwer.login(sender, password)
     serwer.sendmail(sender, recipient, text)
 
-'''
-/home/aneta/software/repos/scrapy/email/password
-'''

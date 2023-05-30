@@ -15,6 +15,14 @@
                 "crawl", 
                 "tricity"
             ]
+        },
+        {
+            "name": "Sendit emails",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/mails/sendit_email.py",
+            "console": "integratedTerminal",
+            "envFile": "${workspaceFolder}/mails/.env"
         }
     ]
 }
