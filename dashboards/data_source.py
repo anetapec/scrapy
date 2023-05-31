@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import pandas as pd
-
 from datetime import datetime
+import os 
 
 class DataSource:
 
@@ -14,7 +14,8 @@ class DataSource:
         self.frequency = frequency
         
     def load_collection(self, name_collection):    
-        client = MongoClient("mongodb://127.0.0.1:27017")
+        mongo_uri = os.getenv("MONGO_URI","mongodb://127.0.0.1:27017")
+        client = MongoClient(mongo_uri)
         db = client['tricity']
         collection = db[name_collection]
         df = pd.DataFrame(list(collection.find()))
