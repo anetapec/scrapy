@@ -33,7 +33,8 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/dashboards/app.py",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "envFile": "${workspaceFolder}/dashboards/.env"
         },
         {
             "name": "Python: work",
@@ -47,6 +48,16 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/automation/docker.py",
+            "args": [
+                "-"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Helm upgrade",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/automation/helm.py",
             "console": "integratedTerminal"
         }
     ]

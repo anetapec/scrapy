@@ -41,4 +41,21 @@ sudo -E minikube start --driver=none --driver=none
 
 ```
 
+kubectl port-forward svc/release1-mongodb 27018:27017
+kubectl port-forward svc/mongodb 27018:27017
 
+# restore mongodb
+```bash
+kubectl port-forward svc/-mongodb 27018:27017  # fir
+# change port in setting for scrapy to 27018
+sudo cp -r /home/aneta/software/repos/scrapy/db=tricity /tmp/hostpath-provisioner/mongodb/mongodb/data/db/
+mongorestore -d tricity -u root -p zVoN1cyxP0 --drop  --authenticationDatabase admin ./db=tricity/tricity
+```
+mongorestore -u root -p $MONGODB_ROOT_PASSWORD
+kubectl exec -it mongodb-85458765c5-wgf8s -- bash
+/bitnami/mongodb
+zVoN1cyxP0
+
+mongorestore -d tricity --drop  ./db=tricity/tricity
+
+sudo cp -r /home/aneta/software/repos/scrapy/db=tricity /tmp/hostpath-provisioner/mongodb/mongodb/data/db/

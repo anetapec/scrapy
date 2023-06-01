@@ -1,5 +1,8 @@
 persistence:
-  enabled: false
+  storageClass: "standard"
 
 image:
   tag: 6.0.6
+
+auth: 
+  initdbScripts: {}
