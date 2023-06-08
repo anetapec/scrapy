@@ -44,12 +44,22 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "Docker build",
+            "name": "Docker build tricity",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/automation/docker.py",
             "args": [
-                "-"
+                "-folder", "tricity", "-image", "tricity:0.0.4"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Docker build dashboards",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/automation/docker.py",
+            "args": [
+                "-folder", "tricity", "-image", "tricity:0.0.4"
             ],
             "console": "integratedTerminal"
         },

@@ -20,7 +20,9 @@ class MongoDBPipeline:
         spider_mongo_collection = spider.custom_settings["collection"]
         self.scrapping_date = self.set_scrapping_date()
         mongo_uri = os.getenv('MONGO_URI',settings.mongodb_uri)
-        self.client = pymongo.MongoClient(mongo_uri)
+        mongo_password = os.getenv('MONGO_PASSWORD',settings.mongodb_password)
+        mongo_user = os.getenv('MONGO_USER',settings.mongodb_password)
+        self.client = pymongo.MongoClient(mongo_uri, username=mongo_user,  password=mongo_password, authSource='tricity') 
         db = self.client[settings.mongodb_db]
         self.collection = db[spider_mongo_collection]
 

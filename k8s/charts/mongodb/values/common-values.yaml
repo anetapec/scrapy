@@ -5,4 +5,10 @@ image:
   tag: 6.0.6
 
 auth: 
-  initdbScripts: {}
+  rootPassword: "1234dada"
+  databases:
+  - tricity
+  usernames:
+  - scrapy
+  passwords:
+  -  scrapy1234

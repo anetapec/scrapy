@@ -49,7 +49,7 @@ kubectl port-forward svc/mongodb 27018:27017
 kubectl port-forward svc/-mongodb 27018:27017  # fir
 # change port in setting for scrapy to 27018
 sudo cp -r /home/aneta/software/repos/scrapy/db=tricity /tmp/hostpath-provisioner/mongodb/mongodb/data/db/
-mongorestore -d tricity -u root -p zVoN1cyxP0 --drop  --authenticationDatabase admin ./db=tricity/tricity
+mongorestore -d tricity -u scrapy -p scrapy1234 --drop  --authenticationDatabase admin ./db=tricity/tricity
 ```
 mongorestore -u root -p $MONGODB_ROOT_PASSWORD
 kubectl exec -it mongodb-85458765c5-wgf8s -- bash

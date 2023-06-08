@@ -46,5 +46,20 @@ release1-mongodb-8969958-8sffv   1/1     Running   0          9m47s
 ```bash
 kubectl get svc 
 
-kubectl port-forward svc/release1-mongodb 27018:27017 # local-port:k8s-pod-port
+kubectl port-forward svc/mongodb 27018:27017 # local-port:k8s-pod-port
+
+```
+
+# Setting the root user and password on first run
+```bash
+docker run --name mongodb \
+  -e MONGODB_ROOT_PASSWORD=password123 bitnami/mongodb:latest
+```
+
+# Creating a user and database on first run
+
+```bash
+docker run --name mongodb \
+  -e MONGODB_USERNAME=my_user -e MONGODB_PASSWORD=password123 \
+  -e MONGODB_DATABASE=my_database bitnami/mongodb:latest
 ```
