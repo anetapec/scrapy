@@ -22,3 +22,6 @@ spec:
           value: scrapy1234
         - name: MONGO_USER
           value: scrapy
+
+
+----
