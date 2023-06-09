@@ -2,9 +2,15 @@ import pymongo
 from tricity import settings
 from datetime import datetime
 import hashlib
-
+from scrapy.exporters import CsvItemExporter
  
 class MongoDBPipeline:
+
+    custom_settings = {
+    'FEEDS': {'scraping_data_csv': {'format': 'csv',}}
+}
+    
+    
     
     def set_hash(self,item):
         result = hashlib.md5(f"{item['price']}{item['url']}".encode('utf-8'))
@@ -21,9 +27,19 @@ class MongoDBPipeline:
         self.client = pymongo.MongoClient(settings.mongodb_uri)
         db = self.client[settings.mongodb_db]
         self.collection = db[spider_mongo_collection]
+        
+        
+        
+        
 
     def close_spider(self, spider):
         self.client.close()
+        self.csv_exporter.finish_exporting()
+        self.csv_file = open('scraping_data_csv', 'wb')
+        self.csv_exporter = CsvItemExporter(self.csv_file)
+        self.csv_exporter.start_exporting()
+        
+        self.csv_file.close()
 
     def process_item(self, item, spider):
         item['price_per_meter'] = (round(float(item['price']) / float(item['area']), 2))
@@ -37,6 +53,11 @@ class MongoDBPipeline:
             item['scrapping_date'] = self.scrapping_date
             data = dict(item)
             self.collection.insert_one(data)
+            
+
+            
+            
+            self.csv_exporter.export_item(item)
             
         
         return item

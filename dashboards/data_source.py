@@ -5,18 +5,18 @@ from datetime import datetime
 
 class DataSource:
 
-    def __init__(self, new_column_name, column_name, column_by_count, frequency, name_collection):
+    def __init__(self, new_column_name, column_name, column_by_count, frequency, collection_name):
         
-        self.df = self.load_collection(name_collection)
+        self.df = self.load_collection(collection_name)
         self.new_column_name = new_column_name
         self.column_name = column_name
         self.column_by_count = column_by_count
         self.frequency = frequency
         
-    def load_collection(self, name_collection):    
+    def load_collection(self, collection_name):    
         client = MongoClient("mongodb://127.0.0.1:27017")
         db = client['tricity']
-        collection = db[name_collection]
+        collection = db[collection_name]
         df = pd.DataFrame(list(collection.find()))
         return df     
     

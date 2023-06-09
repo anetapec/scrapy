@@ -10,42 +10,42 @@ from datetime import datetime
 
 # Daily avg price, avg price per meter, median, median price per meter,  number of houses for sale :   
    
-houses_daily_group = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price', frequency='D', name_collection='houses') 
+houses_daily_group = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price', frequency='D', collection_name='houses') 
 avg_price_by_day = houses_daily_group.avg_price_by_column()
 median_price = houses_daily_group.median_by_column()
 number_of_houses_for_sale_per_day = houses_daily_group.count_object_for_sale().iloc[1:]
 
 
-daily_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='D', name_collection='houses') 
+daily_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='D', collection_name='houses') 
 avg_price_per_meter_by_day = daily_group_per_meter.avg_price_by_column()
 median_price_per_meter = daily_group_per_meter.median_by_column()
 
 # Weekly avg price , avg price per meter, median, median price per meter, number of houses for sale :
 
-houses_weekly_group = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price', frequency='W', name_collection='houses')
+houses_weekly_group = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price', frequency='W', collection_name='houses')
 avg_price_by_week = houses_weekly_group.avg_price_by_column()
 median_price_by_week = houses_weekly_group.median_by_column()
 number_of_houses_for_sale_per_week = houses_weekly_group.count_object_for_sale().iloc[1:]
 
-houses_weekly_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='W', name_collection='houses')
+houses_weekly_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='W', collection_name='houses')
 avg_price_per_meter_by_week = houses_weekly_group_per_meter.avg_price_by_column()
 median_price_per_meter_by_week = houses_weekly_group_per_meter.median_by_column()
 
 # Monthly avg price, avg price per meter, median, median price per meter, number of houses for sale :
-houses_month_group = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price', frequency='M', name_collection='houses') 
+houses_month_group = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price', frequency='M', collection_name='houses') 
 avg_price_by_month = houses_month_group.avg_price_by_column()
 median_price_by_month = houses_month_group.median_by_column()
 number_of_houses_for_sale_per_month = houses_month_group.count_object_for_sale().iloc[1:]
 
-houses_month_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='M', name_collection='houses')
+houses_month_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='M', collection_name='houses')
 avg_price_per_meter_by_month = houses_month_group_per_meter.avg_price_by_column()
 median_price_per_meter_by_month = houses_month_group_per_meter.median_by_column()
 
 
 # HOUSES SOLD
-houses_group_sold_by_day = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price', frequency='D', name_collection='houses')
-houses_group_sold_by_week = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price', frequency='W', name_collection='houses')
-houses_group_sold_by_month = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price', frequency='M', name_collection='houses')
+houses_group_sold_by_day = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price', frequency='D', collection_name='houses')
+houses_group_sold_by_week = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price', frequency='W', collection_name='houses')
+houses_group_sold_by_month = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price', frequency='M', collection_name='houses')
 # count houses sold:
 number_houses_sold_per_day = houses_group_sold_by_day.count_object_sold()
 number_houses_sold_per_week = houses_group_sold_by_week.count_object_sold()
@@ -60,9 +60,9 @@ weekly_median_price_houses_sold  = houses_group_sold_by_week.median_price_object
 monthly_median_price_houses_sold = houses_group_sold_by_month.median_price_object_sold()
 
 # grouping to calculate avg price per meter, median price per meter 
-houses_daily_group_per_meter_houses_sold = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price_per_meter', frequency='D', name_collection='houses')
-houses_weekly_group_per_meter_houses_sold = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price_per_meter', frequency='W', name_collection='houses')
-houses_monthly_group_per_meter_houses_sold = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price_per_meter', frequency='M', name_collection='houses')
+houses_daily_group_per_meter_houses_sold = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price_per_meter', frequency='D', collection_name='houses')
+houses_weekly_group_per_meter_houses_sold = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price_per_meter', frequency='W', collection_name='houses')
+houses_monthly_group_per_meter_houses_sold = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price_per_meter', frequency='M', collection_name='houses')
 # average price per meter , median price per meter 
 daily_avg_price_per_meter_houses_sold = houses_daily_group_per_meter_houses_sold.avg_price_object_sold()
 weekly_avg_price_per_meter_houses_sold = houses_weekly_group_per_meter_houses_sold.avg_price_object_sold()
@@ -84,42 +84,42 @@ sorted_df = houses_sold.sort_values(by='last_seen_date')
 
 # Daily avg price, avg price per meter, median, median price per meter,  number of flats for sale :   
    
-daily_group_flats = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price', frequency='D', name_collection='flats') 
+daily_group_flats = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price', frequency='D', collection_name='flats') 
 avg_price_flats_by_day = daily_group_flats.avg_price_by_column()
 median_price_flats = daily_group_flats.median_by_column()
 number_of_flats_for_sale_per_day = daily_group_flats.count_object_for_sale().iloc[1:]
 
 
-daily_group_per_meter_flats = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='D', name_collection='flats') 
+daily_group_per_meter_flats = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='D', collection_name='flats') 
 avg_price_per_meter_flats_by_day = daily_group_per_meter_flats.avg_price_by_column()
 median_price_per_meter_flats = daily_group_per_meter_flats.median_by_column()
 
 # Weekly avg price , avg price per meter, median, median price per meter, number of flats for sale :
 
-flats_weekly_group = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price', frequency='W', name_collection='flats')
+flats_weekly_group = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price', frequency='W', collection_name='flats')
 avg_price_flats_by_week = flats_weekly_group.avg_price_by_column()
 median_price_flats_by_week = flats_weekly_group.median_by_column()
 number_of_flats_for_sale_per_week = flats_weekly_group.count_object_for_sale().iloc[1:]
 
-flats_weekly_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='W', name_collection='flats')
+flats_weekly_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='W', collection_name='flats')
 avg_price_per_meter_flats_by_week = flats_weekly_group_per_meter.avg_price_by_column()
 median_price_per_meter_flats_by_week = flats_weekly_group_per_meter.median_by_column()
 
 # Monthly avg price, avg price per meter, median, median price per meter, number of flats for sale :
-flats_month_group = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price', frequency='M', name_collection='flats') 
+flats_month_group = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price', frequency='M', collection_name='flats') 
 avg_price_flats_by_month = flats_month_group.avg_price_by_column()
 median_price_flats_by_month = flats_month_group.median_by_column()
 number_of_flats_for_sale_per_month = flats_month_group.count_object_for_sale().iloc[1:]
 
-flats_month_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='M', name_collection='flats')
+flats_month_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='M', collection_name='flats')
 avg_price_per_meter_flats_by_month = flats_month_group_per_meter.avg_price_by_column()
 median_price_per_meter_flats_by_month = flats_month_group_per_meter.median_by_column()
 
 
 # FLATS SOLD
-flats_group_sold_by_day = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price', frequency='D', name_collection='flats')
-flats_group_sold_by_week = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price', frequency='W', name_collection='flats')
-flats_group_sold_by_month = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price', frequency='M', name_collection='flats')
+flats_group_sold_by_day = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price', frequency='D', collection_name='flats')
+flats_group_sold_by_week = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price', frequency='W', collection_name='flats')
+flats_group_sold_by_month = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price', frequency='M', collection_name='flats')
 # count flats sold:
 number_flats_sold_per_day = flats_group_sold_by_day.count_object_sold()
 number_flats_sold_per_week = flats_group_sold_by_week.count_object_sold()
@@ -134,9 +134,9 @@ weekly_median_price_flats_sold  = flats_group_sold_by_week.median_price_object_s
 monthly_median_price_flats_sold = flats_group_sold_by_month.median_price_object_sold()
 
 # grouping to calculate avg price per meter, median price per meter 
-flats_daily_group_per_meter_houses_sold = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price_per_meter', frequency='D', name_collection='flats')
-flats_weekly_group_per_meter_houses_sold = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price_per_meter', frequency='W', name_collection='flats')
-flats_monthly_group_per_meter_houses_sold = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price_per_meter', frequency='M', name_collection='flats')
+flats_daily_group_per_meter_houses_sold = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price_per_meter', frequency='D', collection_name='flats')
+flats_weekly_group_per_meter_houses_sold = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price_per_meter', frequency='W', collection_name='flats')
+flats_monthly_group_per_meter_houses_sold = DataSource(new_column_name='date_of_sale', column_name='last_seen_date', column_by_count='price_per_meter', frequency='M', collection_name='flats')
 # average price per meter , median price per meter 
 daily_avg_price_per_meter_flats_sold = flats_daily_group_per_meter_houses_sold.avg_price_object_sold()
 weekly_avg_price_per_meter_flats_sold = flats_weekly_group_per_meter_houses_sold.avg_price_object_sold()
