@@ -4,8 +4,9 @@ from dash import Dash, html, dcc
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
+#from tricity.tricity.pipelines import MongoDBPipeline
 
-
+#now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 # HOUSES FOR SALE
 
 # Daily avg price, avg price per meter, median, median price per meter,  number of houses for sale :   
@@ -14,6 +15,18 @@ houses_daily_group = DataSource(new_column_name='datetime', column_name='scrappi
 avg_price_by_day = houses_daily_group.avg_price_by_column()
 median_price = houses_daily_group.median_by_column()
 number_of_houses_for_sale_per_day = houses_daily_group.count_object_for_sale().iloc[1:]
+# houses listed for sale on a particular day
+houses_daily_group.df['datetime'] = pd.to_datetime(houses_daily_group.df['scrapping_date'])
+today = pd.Timestamp.now() - pd.Timedelta(days=1)  # tu zmienić 
+houses_for_sale_today = houses_daily_group.df[(houses_daily_group.df['datetime'] >= today)]  #tu tez
+houses_for_sale_details = houses_for_sale_today.sort_values(by='scrapping_date')
+houses_for_sale_details.to_csv('houses_for_sale_today.csv')
+print(houses_for_sale_details)
+
+
+
+
+
 
 
 daily_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='D', collection_name='houses') 

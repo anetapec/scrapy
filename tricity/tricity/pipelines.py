@@ -5,6 +5,7 @@ import hashlib
 from scrapy.exporters import CsvItemExporter
 import csv
 
+
 class MongoDBPipeline:
 
     #custom_settings = {
@@ -21,6 +22,8 @@ class MongoDBPipeline:
     def set_scrapping_date(self):
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         return now
+
+    
 
     def open_spider(self, spider):
         spider_mongo_collection = spider.custom_settings["collection"]
@@ -62,10 +65,14 @@ class MongoDBPipeline:
             item['scrapping_date'] = self.scrapping_date
             data = dict(item)
             self.collection.insert_one(data)
-            with open('scraping_data_csv', mode='w') as csv_file:
-                writer = csv.writer(csv_file)
-                scraped_data = self.collection.insert_one(data)
-                writer.writerow(scraped_data)
+            
+            if item['scrapping_date'] == self.set_scrapping_date():
+
+                with open('scraping_data_csv', mode='w') as csv_file:
+                    writer = csv.writer(csv_file)
+                    scraped_data = self.collection.insert_one(data)
+                    writer.writerow(scraped_data)
+                    
 
 
 
@@ -75,3 +82,15 @@ class MongoDBPipeline:
 
 
         return item
+    
+# class MyCustomFilter:
+
+    # def __init__(self, feed_options):
+        # self.feed_options = feed_options
+
+    # def accepts(self, item):
+        # if "scrapping_date" in item and item["scrapping_date"] == MongoDBPipeline.set_scrapping_date():
+            # return True
+        # return False
+    
+    

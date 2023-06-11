@@ -93,6 +93,23 @@ mongodb_db = 'tricity'
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
+# FEEDS = {
+    # 'scraping_data/%(name)s_%(time)s.csv': {
+        # 'format': 'csv',
+        # 'encoding': 'utf8',
+        # 'store_empty': False,
+        # 'item_classes': [MyCustomFilter, 'myproject.items.MyItemClass2'],
+        # 'fields': None,
+        # 'indent': 4,
+        # 'item_export_kwargs': {
+        #    'export_empty_fields': True,
+        # },
+
+                                            # }
+# }
+
 FEEDS = {
-    'scraping_data_csv': {'format': 'csv',}
+    'scraping_data/%(name)s_%(time)s.csv': {
+        'format': 'csv',
+    }
 }
