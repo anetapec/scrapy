@@ -21,7 +21,7 @@ houses_daily_group.df['datetime'] = pd.to_datetime(houses_daily_group.df['scrapp
 today = pd.Timestamp.now() - pd.Timedelta(days=1)   
 houses_for_sale_today = houses_daily_group.df[(houses_daily_group.df['datetime'] > today)]  
 houses_for_sale_details = houses_for_sale_today.sort_values(by='scrapping_date')
-houses_for_sale_details.to_csv('houses_for_sale_today.csv')
+#houses_for_sale_details.to_csv('houses_for_sale_today.csv')
 
 daily_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='D', collection_name='houses') 
 avg_price_per_meter_by_day = daily_group_per_meter.avg_price_by_column()
@@ -100,7 +100,7 @@ number_of_flats_for_sale_per_day = daily_group_flats.count_object_for_sale().ilo
 daily_group_flats.df['datetime'] = pd.to_datetime(daily_group_flats.df['scrapping_date'])
 flats_for_sale_today = daily_group_flats.df[(daily_group_flats.df['datetime'] > today)]
 flats_for_sale_details = flats_for_sale_today.sort_values(by='scrapping_date')
-flats_for_sale_details.to_csv('flats_for_sale_today.csv')
+#flats_for_sale_details.to_csv('flats_for_sale_today.csv')
 
 daily_group_per_meter_flats = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='D', collection_name='flats') 
 avg_price_per_meter_flats_by_day = daily_group_per_meter_flats.avg_price_by_column()
@@ -159,7 +159,7 @@ weekly_median_price_per_meter_flats_sold = flats_weekly_group_per_meter_houses_s
 monthly_median_price_per_meter_flats_sold = flats_monthly_group_per_meter_houses_sold.median_price_object_sold()
 # Prices of flats sold on particular days  
 flats_group_sold_by_day.df['date_of_sale'] = pd.to_datetime(flats_group_sold_by_day.df['last_seen_date']) 
-older_than = pd.Timestamp.now() - pd.Timedelta(days=1)
+#older_than = pd.Timestamp.now() - pd.Timedelta(days=1)
 flats_sold = flats_group_sold_by_day.df[(flats_group_sold_by_day.df['date_of_sale'] <=  older_than)] #per day
 flats_sorted_df = flats_sold.sort_values(by='last_seen_date')
 
@@ -263,6 +263,10 @@ fig_monthly_median_price_per_meter_flats_sold = px.bar(monthly_median_price_per_
               labels={"date_of_sale": "Date", "price_per_meter": "Median price per meter of flats"},
               hover_data={"date_of_sale": "|%B %d, %Y"},
               title='Monthly median price per meter of flats sold.')  
+
+fig_number_flats_sold_per_month = px.bar(number_flats_sold_per_month, x="date_of_sale", y="last_seen_date",
+              labels={"date_of_sale": "Date", "last_seen_date": "Number of flat sold"},
+              hover_data={"date_of_sale": "|%B %d, %Y"})
  
 
 
@@ -272,7 +276,7 @@ figures = [fig_avg_price_by_month, fig_avg_price_per_meter_by_month, fig_median_
            fig_monthly_median_price_per_meter_houses_sold, fig_number_houses_sold_per_month, fig_avg_price_flats_by_month, fig_avg_price_per_meter_flats_by_month,
            fig_median_price_flats_by_month, fig_median_price_per_meter_flats_by_month, fig_number_of_flats_for_sale_per_month,
            fig_monthly_avg_price_flats_sold,fig_monthly_avg_price_per_meter_flats_sold, fig_monthly_median_price_flats_sold,
-           fig_monthly_median_price_per_meter_flats_sold]
+           fig_monthly_median_price_per_meter_flats_sold, fig_number_flats_sold_per_month]
 
 for figur in figures:
     figur.update_xaxes(
@@ -566,7 +570,25 @@ app.layout = html.Div(children=[
     html.P('Monthly median price per meter of flats sold'), 
     dcc.Graph(figure=fig_monthly_median_price_per_meter_flats_sold),
 
+    html.P('Daily number of flats sold.'), 
+dcc.Graph(
+    id='graph49',
+    figure=px.bar(number_flats_sold_per_day, x="date_of_sale", y="last_seen_date",
+                  labels={"date_of_sale": "Date",
+                         "last_seen_date": "Number of flat sold"})
+    ),
 
+    html.P('Weekly number of flats sold.'), 
+dcc.Graph(
+    id='graph50',
+    figure=px.bar(number_flats_sold_per_week, x="date_of_sale", y="last_seen_date",
+                  labels={"date_of_sale": "Date",
+                         "last_seen_date": "Number of flat sold"})
+    ),
+
+    html.P('Monthly number of flats sold.'), 
+dcc.Graph(figure=fig_number_flats_sold_per_month),
+    
 
  ]
  

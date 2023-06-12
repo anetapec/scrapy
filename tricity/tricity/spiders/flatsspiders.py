@@ -20,7 +20,7 @@ class FlatsspidersSpider(scrapy.Spider):
                 item['price'] = int(re.sub("[^0-9]", "", flat.css("p.ogloszeniaList__price::text").get()))
                 item['url'] = flat.css("a.ogloszeniaList__img").attrib["href"]
                 item['numbers_of_rooms'] = str(flat.css(".ogloszeniaList__detail.button.button--label.button--fourth:nth-child(2)::text").get()).lstrip()  
-                item['area'] = str(flat.css(".ogloszeniaList__detail.button.button--label.button--fourth::text").get()).strip()
+                item['area'] = str(re.sub("[^0-9]", "", flat.css(".ogloszeniaList__detail.button.button--label.button--fourth::text")).get()).strip()
             except: 
                 print("-")
             yield item
