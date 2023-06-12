@@ -3,6 +3,7 @@ from tricity.items import HouseItem
 import re
 
 
+
 class FlatsspidersSpider(scrapy.Spider):
     name = "flatsspiders"
     allowed_domains = ["dom.trojmiasto.pl"]
@@ -25,7 +26,7 @@ class FlatsspidersSpider(scrapy.Spider):
             yield item
 
         path_url = response.css(".pagination__controls__next::attr(href)").get()  
-        base_url = "https://dom.trojmiasto.pl/nieruchomosci-rynek-wtorny/e1i,17_14_13_18_16_24_19_25_6_15_61_20_21,ii,1,qi,45_,wi,100.html"
-        next_page = base_url + path_url
+        #base_url = response.url
+        next_page = response.url + path_url
         if path_url is not None:
             yield response.follow(next_page, callback=self.parse)

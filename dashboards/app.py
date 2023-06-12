@@ -15,19 +15,13 @@ houses_daily_group = DataSource(new_column_name='datetime', column_name='scrappi
 avg_price_by_day = houses_daily_group.avg_price_by_column()
 median_price = houses_daily_group.median_by_column()
 number_of_houses_for_sale_per_day = houses_daily_group.count_object_for_sale().iloc[1:]
-# houses listed for sale on a particular day
+
+# Houses listed for sale on a particular day
 houses_daily_group.df['datetime'] = pd.to_datetime(houses_daily_group.df['scrapping_date'])
-today = pd.Timestamp.now() - pd.Timedelta(days=1)  # tu zmienić 
-houses_for_sale_today = houses_daily_group.df[(houses_daily_group.df['datetime'] >= today)]  #tu tez
+today = pd.Timestamp.now() - pd.Timedelta(days=1)   
+houses_for_sale_today = houses_daily_group.df[(houses_daily_group.df['datetime'] > today)]  
 houses_for_sale_details = houses_for_sale_today.sort_values(by='scrapping_date')
 houses_for_sale_details.to_csv('houses_for_sale_today.csv')
-print(houses_for_sale_details)
-
-
-
-
-
-
 
 daily_group_per_meter = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='D', collection_name='houses') 
 avg_price_per_meter_by_day = daily_group_per_meter.avg_price_by_column()
@@ -102,6 +96,11 @@ avg_price_flats_by_day = daily_group_flats.avg_price_by_column()
 median_price_flats = daily_group_flats.median_by_column()
 number_of_flats_for_sale_per_day = daily_group_flats.count_object_for_sale().iloc[1:]
 
+# Flats listed for sale on a particular day
+daily_group_flats.df['datetime'] = pd.to_datetime(daily_group_flats.df['scrapping_date'])
+flats_for_sale_today = daily_group_flats.df[(daily_group_flats.df['datetime'] > today)]
+flats_for_sale_details = flats_for_sale_today.sort_values(by='scrapping_date')
+flats_for_sale_details.to_csv('flats_for_sale_today.csv')
 
 daily_group_per_meter_flats = DataSource(new_column_name='datetime', column_name='scrapping_date', column_by_count='price_per_meter', frequency='D', collection_name='flats') 
 avg_price_per_meter_flats_by_day = daily_group_per_meter_flats.avg_price_by_column()
@@ -369,12 +368,12 @@ app.layout = html.Div(children=[
     
     dcc.Graph(
         id='graph16',
-        figure=px.bar(sorted_df, x="last_seen_date", y="price", color="url")),
+        figure=px.bar(sorted_df, x="last_seen_date", y="price", color="hash")),
 
     html.P('Daily price_per_meter of houses sold.'), 
     dcc.Graph(
         id='graph17',
-        figure=px.bar(sorted_df, x="last_seen_date", y="price_per_meter", color="url")
+        figure=px.bar(sorted_df, x="last_seen_date", y="price_per_meter", color="hash")
         ),
 
     html.P('Weekly average price of houses sold.'), 
@@ -516,13 +515,13 @@ app.layout = html.Div(children=[
 
     dcc.Graph(
         id='graph40',
-        figure=px.bar(flats_sorted_df, x="last_seen_date", y="price", color="url")
+        figure=px.bar(flats_sorted_df, x="last_seen_date", y="price", color="hash")
         ),
 
     html.P('Daily price_per_meter of flats sold.'), 
     dcc.Graph(
         id='graph41',
-        figure=px.bar(flats_sorted_df, x="last_seen_date", y="price_per_meter", color="url")
+        figure=px.bar(flats_sorted_df, x="last_seen_date", y="price_per_meter", color="hash")
         ),
 
     html.P('Weekly average price of flats sold.'), 
