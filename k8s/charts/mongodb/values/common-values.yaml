@@ -12,3 +12,8 @@ auth:
   - scrapy
   passwords:
   -  scrapy1234
+
+containerSecurityContext:
+  enabled: false
+  runAsNonRoot: false
+  runAsUser: 0

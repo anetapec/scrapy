@@ -37,7 +37,7 @@ sudo tar zxvf cni.tgz
 ```bash
 export CHANGE_MINIKUBE_NONE_USER=true
 sudo sysctl fs.protected_regular=0
-sudo -E minikube start --driver=none --driver=none
+sudo -E minikube start --driver=none 
 
 ```
 
