@@ -108,8 +108,8 @@ FEED_EXPORT_ENCODING = "utf-8"
                                             # }
 # }
 
-FEEDS = {
-    'scraping_data/%(name)s_%(time)s.csv': {
-        'format': 'csv',
-    }
-}
+# FEEDS = {
+    # 'scraping_data/%(name)s_%(time)s.csv': {
+        # 'format': 'csv',
+    # }
+# }

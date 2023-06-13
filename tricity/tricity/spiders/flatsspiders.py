@@ -20,13 +20,14 @@ class FlatsspidersSpider(scrapy.Spider):
                 item['price'] = int(re.sub("[^0-9]", "", flat.css("p.ogloszeniaList__price::text").get()))
                 item['url'] = flat.css("a.ogloszeniaList__img").attrib["href"]
                 item['numbers_of_rooms'] = str(flat.css(".ogloszeniaList__detail.button.button--label.button--fourth:nth-child(2)::text").get()).lstrip()  
-                item['area'] = str(re.sub("[^0-9]", "", flat.css(".ogloszeniaList__detail.button.button--label.button--fourth::text")).get()).strip()
+                item['area'] = str(flat.css(".ogloszeniaList__detail.button.button--label.button--fourth::text").get()).strip()
+
             except: 
                 print("-")
             yield item
 
         path_url = response.css(".pagination__controls__next::attr(href)").get()  
-        #base_url = response.url
-        next_page = response.url + path_url
+        base_url = "https://dom.trojmiasto.pl/nieruchomosci-rynek-wtorny/e1i,17_14_13_18_16_24_19_25_6_15_61_20_21,ii,1,qi,45_,wi,100.html"
+        next_page = base_url + path_url
         if path_url is not None:
             yield response.follow(next_page, callback=self.parse)

@@ -4,12 +4,13 @@ from datetime import datetime
 import hashlib
 from scrapy.exporters import CsvItemExporter
 import csv
+from scrapy.exceptions import DropItem
 
 
 class MongoDBPipeline:
 
-    #custom_settings = {
-    #'FEEDS': {'scraping_data_csv': {'format': 'csv',}}
+    # custom_settings = {
+    # 'FEEDS': {'scraping_data_csv': {'format': 'csv',}}
 #}
 
 
@@ -31,26 +32,14 @@ class MongoDBPipeline:
         self.client = pymongo.MongoClient(settings.mongodb_uri)
         db = self.client[settings.mongodb_db]
         self.collection = db[spider_mongo_collection]
-
-
-
-
+        self.file = open('scrape_today.csv', 'w+b')
+        self.exporter = CsvItemExporter(self.file)
+        self.exporter.start_exporting()
 
     def close_spider(self, spider):
         self.client.close()
-
-        # self.csv_file = open('scraping_data_csv', 'wb')
-        # self.csv_exporter = CsvItemExporter(self.csv_file)
-
-        #self.csv_exporter.fields_to_export = ['price', 'url', 'area', 'price_per_meter', 'scrapping_date']
-        # self.csv_exporter.start_exporting()
-
-        # self.csv_exporter.finish_exporting()
-
-        # self.csv_file.close()
-
-
-
+        self.exporter.finish_exporting()
+        self.file.close()
 
 
     def process_item(self, item, spider):
@@ -61,36 +50,14 @@ class MongoDBPipeline:
         if self.collection.count_documents((filter_dict), limit = 1) !=0:
             new_value = { '$set': {'last_seen_date': item['last_seen_date']}}
             self.collection.update_one(filter_dict, new_value)
+            raise DropItem("Duplicate item found: {}".format(item['scrapping_date']))
         else:
             item['scrapping_date'] = self.scrapping_date
             data = dict(item)
             self.collection.insert_one(data)
             
-            if item['scrapping_date'] == self.set_scrapping_date():
-
-                with open('scraping_data_csv', mode='w') as csv_file:
-                    writer = csv.writer(csv_file)
-                    scraped_data = self.collection.insert_one(data)
-                    writer.writerow(scraped_data)
-                    
-
-
-
-
-
-            #self.csv_exporter.export_item(item)
-
+            self.exporter.export_item(item)
 
         return item
-    
-# class MyCustomFilter:
-
-    # def __init__(self, feed_options):
-        # self.feed_options = feed_options
-
-    # def accepts(self, item):
-        # if "scrapping_date" in item and item["scrapping_date"] == MongoDBPipeline.set_scrapping_date():
-            # return True
-        # return False
     
     
