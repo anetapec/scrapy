@@ -32,7 +32,8 @@ class MongoDBPipeline:
         self.client = pymongo.MongoClient(settings.mongodb_uri)
         db = self.client[settings.mongodb_db]
         self.collection = db[spider_mongo_collection]
-        self.file = open('scrape_today.csv', 'w+b')
+        self.file = open('flats.csv', 'w+b')
+        #self.file = open('%s(%s).csv'%(spider.name,datetime.now().strftime('%d/%m/%Y,%H-%M-%S')), 'w+b')
         self.exporter = CsvItemExporter(self.file)
         self.exporter.start_exporting()
 

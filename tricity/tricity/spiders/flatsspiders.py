@@ -1,7 +1,7 @@
 import scrapy
 from tricity.items import HouseItem
 import re
-
+import requests
 
 
 class FlatsspidersSpider(scrapy.Spider):
