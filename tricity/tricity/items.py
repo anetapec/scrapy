@@ -11,4 +11,4 @@ class HouseItem(Item):
     scrapping_date = Field()
     hash = Field()
     last_seen_date = Field()
-    
+    hash_area = Field()

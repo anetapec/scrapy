@@ -24,3 +24,8 @@ docker run -ti --add-host=mongoservice:172.17.0.1 tricityserver:0.0.0 sh
 cd ./k8s/charts/
 helm upgrade mongodb mongodb --namespace mongodb --install --create-namespace
 ```
+## Mongo dump
+```bash
+cd scrapy
+mongodump --out=db=tricity
+```

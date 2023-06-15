@@ -15,10 +15,15 @@ class MongoDBPipeline:
 
 
 
-    def set_hash(self,item):
-        result = hashlib.md5(f"{item['price']}{item['url']}".encode('utf-8'))
-        hash_value = result.hexdigest()
-        return hash_value
+    def set_hash_url(self,item):
+        result_url = hashlib.md5(f"{item['price']}{item['url']}".encode('utf-8'))
+        hash_value_url = result_url.hexdigest()
+        return hash_value_url
+    
+    def set_hash_area(self,item):
+        result_area = hashlib.md5(f"{item['price']}{item['area']}".encode('utf-8'))
+        hash_value_area = result_area.hexdigest()
+        return hash_value_area
 
     def set_scrapping_date(self):
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -46,11 +51,18 @@ class MongoDBPipeline:
     def process_item(self, item, spider):
         item['price_per_meter'] = (round(float(item['price']) / float(item['area']), 2))
         item['last_seen_date'] = self.scrapping_date
-        item['hash'] = self.set_hash(item)
+        item['hash'] = self.set_hash_url(item)
+        item['hash_area'] = self.set_hash_area(item)
         filter_dict = {'hash': item['hash']}
-        if self.collection.count_documents((filter_dict), limit = 1) !=0:
+        filter_dict_area = {'hash_area': item['hash_area']}
+        #filter_dict_all = [filter_dict, filter_dict_area]
+        if self.collection.count_documents((filter_dict), limit = 1) !=0 :
             new_value = { '$set': {'last_seen_date': item['last_seen_date']}}
             self.collection.update_one(filter_dict, new_value)
+            raise DropItem("Duplicate item found: {}".format(item['scrapping_date']))
+        if self.collection.count_documents((filter_dict_area), limit = 1) !=0 :
+            new_value = { '$set': {'last_seen_date': item['last_seen_date']}}
+            self.collection.update_one(filter_dict_area, new_value)
             raise DropItem("Duplicate item found: {}".format(item['scrapping_date']))
         else:
             item['scrapping_date'] = self.scrapping_date
