@@ -13,7 +13,10 @@ auth:
   passwords:
   -  scrapy1234
 
-containerSecurityContext:
-  enabled: false
-  runAsNonRoot: false
-  runAsUser: 0
+# containerSecurityContext:
+#   runAsNonRoot: false
+#   runAsUser: 0
+# podSecurityContext:
+#   fsGroup: 0
+volumePermissions:
+    enabled: true
