@@ -6,10 +6,13 @@ from email.mime.text import MIMEText
 import os
 
 
+# bart.gawron@gmail.com
+
 port = 465
 smtp_serwer = 'smtp.gmail.com'
 sender = 'aneta.gawron85@gmail.com'
-recipient = 'bart.gawron@gmail.com'   #'aneta.gawron85@gmail.com'
+recipient = 'bart.gawron@gmail.com'
+#recipient = 'aneta.gawron85@gmail.com'
 password = os.getenv('API_KEY')
 subject = "Houses and flats for sale today"
 
@@ -25,14 +28,14 @@ message["Subject"] = subject
 message.attach(MIMEText(contents1, "html"))
 message.attach(MIMEText(contents2, "plain"))
 
-att1 = MIMEText(open('tricity/scraping_data/flats_14-06-2023.csv', 'rb').read(), 'base64', 'utf-8')
+att1 = MIMEText(open('tricity/scraping_data_csv/flats_15-06-2023.csv', 'rb').read(), 'base64', 'utf-8')
 att1["Content-Type"] = 'application/octet-stream'
-att1["Content-Disposition"] = 'attachment; filename="flats_14-06-2023.csv"'
+att1["Content-Disposition"] = 'attachment; filename="flats_15-06-2023.csv"'
 message.attach(att1)
 
-att2 = MIMEText(open('tricity/scraping_data/houses_14-06-2023.csv', 'rb').read(), 'base64', 'utf-8')
+att2 = MIMEText(open('/home/aneta/software/repos/scrapy/tricity/scraping_data_csv/flats_15-06-2023.csv', 'rb').read(), 'base64', 'utf-8')
 att2["Content-Type"] = 'application/octet-stream'
-att2["Content-Disposition"] = 'attachment; filename="houses_14-06-2023.csv"'
+att2["Content-Disposition"] = 'attachment; filename="houses_15-06-2023.csv"'
 message.attach(att2)
 
 text = message.as_string()
