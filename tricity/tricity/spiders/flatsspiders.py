@@ -27,7 +27,28 @@ class FlatsspidersSpider(scrapy.Spider):
             yield item
 
         path_url = response.css(".pagination__controls__next::attr(href)").get()  
-        base_url = "https://dom.trojmiasto.pl/nieruchomosci-rynek-wtorny/e1i,17_14_13_18_16_24_19_25_6_15_61_20_21,ii,1,qi,45_,wi,100.html"
-        next_page = base_url + path_url
+        
+        #base_url = "https://dom.trojmiasto.pl/nieruchomosci-rynek-wtorny/e1i,17_14_13_18_16_24_19_25_6_15_61_20_21,ii,1,qi,45_,wi,100.html"
+        #next_page = base_url + path_url
+        # if path_url is not None:
+            # yield scrapy.Request(next_page, callback=self.parse)
+        
+        # First attempt to solve:
+
+        # base_url = FlatsspidersSpider.start_urls
+        # next_page = base_url + path_url
+            # #yield scrapy.Request(next_page, callback=self.parse)
+
+
+        # Second attempt to solve:
+        
+        base_url = requests.get(FlatsspidersSpider.start_urls)
+        next_page = base_url.url + path_url
         if path_url is not None:
             yield response.follow(next_page, callback=self.parse)
+
+
+        
+    
+        
+        
