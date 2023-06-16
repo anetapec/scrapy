@@ -12,12 +12,13 @@ port = 465
 smtp_serwer = 'smtp.gmail.com'
 sender = 'aneta.gawron85@gmail.com'
 recipient = 'bart.gawron@gmail.com'
+
 #recipient = 'aneta.gawron85@gmail.com'
 password = os.getenv('API_KEY')
 subject = "Houses and flats for sale today"
 
 contents1 = """<b> Hello. </b>
-<h6> In the attachments I am sending the most attractive sale offers of houses and flats from today. </h6>"""
+<h6>In attachments I am sending houses and apartments that have been put up for sale today. </h6>"""
 contents2 = """Kind regards."""
 message = MIMEMultipart()
 message["From"] = sender
@@ -28,12 +29,12 @@ message["Subject"] = subject
 message.attach(MIMEText(contents1, "html"))
 message.attach(MIMEText(contents2, "plain"))
 
-att1 = MIMEText(open('tricity/scraping_data_csv/flats_15-06-2023.csv', 'rb').read(), 'base64', 'utf-8')
+att1 = MIMEText(open('tricity/scraping_data_csv/flats_16-06-2023.csv', 'rb').read(), 'base64', 'utf-8')
 att1["Content-Type"] = 'application/octet-stream'
-att1["Content-Disposition"] = 'attachment; filename="flats_15-06-2023.csv"'
+att1["Content-Disposition"] = 'attachment; filename="flats_16-06-2023.csv"'
 message.attach(att1)
 
-att2 = MIMEText(open('/home/aneta/software/repos/scrapy/tricity/scraping_data_csv/flats_15-06-2023.csv', 'rb').read(), 'base64', 'utf-8')
+att2 = MIMEText(open('tricity/scraping_data_csv/houses_15-06-2023.csv', 'rb').read(), 'base64', 'utf-8')
 att2["Content-Type"] = 'application/octet-stream'
 att2["Content-Disposition"] = 'attachment; filename="houses_15-06-2023.csv"'
 message.attach(att2)
