@@ -109,7 +109,7 @@ FEED_EXPORT_ENCODING = "utf-8"
 # }
 
 # FEEDS = {
-    # 'flatsspiders/%(name)s_%(time)s.csv': {
+    # 'scraping_data_csv/%(name)s_%(time)s.csv': {
         # 'format': 'csv',
     # }
 # }

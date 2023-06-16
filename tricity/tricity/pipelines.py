@@ -5,12 +5,13 @@ import hashlib
 from scrapy.exporters import CsvItemExporter
 import csv
 from scrapy.exceptions import DropItem
+import os
 
 
 class MongoDBPipeline:
 
     # custom_settings = {
-    # 'FEEDS': {'scraping_data_csv': {'format': 'csv',}}
+#    # 'FEEDS': {'/scraping_data_csv/%(name)s_%(time)s.csv': {'format': 'csv',}}
 #}
 
 
@@ -37,9 +38,9 @@ class MongoDBPipeline:
         self.client = pymongo.MongoClient(settings.mongodb_uri)
         db = self.client[settings.mongodb_db]
         self.collection = db[spider_mongo_collection]
-        self.file = open('flats.csv', 'w+b')
-        #self.file = open('%s(%s).csv'%(spider.name,datetime.now().strftime('%d/%m/%Y,%H-%M-%S')), 'w+b')
-        self.exporter = CsvItemExporter(self.file)
+        filename = str(spider_mongo_collection + self.set_scrapping_date())
+        file = open(filename + ".csv", 'w+b')   
+        self.exporter = CsvItemExporter(file)
         self.exporter.start_exporting()
 
     def close_spider(self, spider):
@@ -55,7 +56,6 @@ class MongoDBPipeline:
         item['hash_area'] = self.set_hash_area(item)
         filter_dict = {'hash': item['hash']}
         filter_dict_area = {'hash_area': item['hash_area']}
-        #filter_dict_all = [filter_dict, filter_dict_area]
         if self.collection.count_documents((filter_dict), limit = 1) !=0 :
             new_value = { '$set': {'last_seen_date': item['last_seen_date']}}
             self.collection.update_one(filter_dict, new_value)
