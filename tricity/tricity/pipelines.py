@@ -29,6 +29,7 @@ class MongoDBPipeline:
     def set_scrapping_date(self):
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         return now
+    
 
     
 

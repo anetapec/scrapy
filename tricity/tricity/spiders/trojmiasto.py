@@ -1,5 +1,6 @@
 import scrapy
-from tricity.items import HouseItem
+#from tricity.items import HouseItem
+from items import HouseItem
 import re
 from datetime import datetime 
 

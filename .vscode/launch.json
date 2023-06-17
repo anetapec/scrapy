@@ -48,7 +48,8 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/tricity/tricity/sendit_email.py",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "envFile": "${workspaceFolder}/tricity/tricity/.env"
         },
     ]
 }
