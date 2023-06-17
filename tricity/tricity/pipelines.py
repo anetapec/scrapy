@@ -1,5 +1,5 @@
 import pymongo
-from tricity import settings
+import settings
 from datetime import datetime
 import hashlib
 from scrapy.exporters import CsvItemExporter

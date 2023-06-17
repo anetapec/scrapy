@@ -43,6 +43,12 @@
             "program": "${workspaceFolder}/dashboards/workship.py",
             "console": "integratedTerminal"
         }
-        
+        {
+            "name": "Python: sendit email",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/tricity/tricity/sendit_email.py",
+            "console": "integratedTerminal"
+        },
     ]
 }
