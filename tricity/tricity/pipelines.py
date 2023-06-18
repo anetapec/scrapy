@@ -1,5 +1,6 @@
 import pymongo
-from tricity import settings
+#from tricity import settings #to gdy odpalamy scrapy flatsspider i tricity
+import settings # gdy odpalamy plik sendit email
 from datetime import datetime
 import hashlib
 from scrapy.exporters import CsvItemExporter
@@ -37,7 +38,7 @@ class MongoDBPipeline:
         self.client = pymongo.MongoClient(settings.mongodb_uri)
         db = self.client[settings.mongodb_db]
         self.collection = db[spider_mongo_collection]
-        self.exporter = MongoDBPipeline.set_name_file(self, spider_mongo_collection)
+        #self.exporter = MongoDBPipeline.set_name_file(self, spider_mongo_collection)
 
     def close_spider(self, spider):
         self.client.close()
@@ -46,10 +47,9 @@ class MongoDBPipeline:
         self.exporter.start_exporting()
         self.exporter.finish_exporting()
         file.close()
+        mail = Mail()
+        mail.send()
 
-
-        
-        
 
     def process_item(self, item, spider):
         item['price_per_meter'] = (round(float(item['price']) / float(item['area']), 2))
@@ -70,9 +70,7 @@ class MongoDBPipeline:
             item['scrapping_date'] = self.scrapping_date
             data = dict(item)
             self.collection.insert_one(data)
-            
             self.exporter.export_item(item)
-
         return item
     
 
@@ -87,7 +85,7 @@ class Mail:
 
     def send(self):
         ssl_context = ssl.create_default_context()
-        service = smtplib.SMTP_SSL(self.smtp_serwer, self.port, context=ssl_context)
+        service = smtplib.SMTP_SSL(self.smtp_serwer, self.port)
         service.login(self.sender, self.password)
 
         mail = MIMEMultipart()
@@ -103,26 +101,21 @@ class Mail:
         name_att1 = MongoDBPipeline()
         #att1 = name_att1.open_spider(spider='flatsspider'.filename)
 
-        att1 = name_att1.set_name_file(spider_mongo_collection='flats')
+        att1_to_send = name_att1.set_name_file(spider_mongo_collection='flats')
         #att1 = name_att1.open_spider(spider='flatsspider'(self.filename))
-        att1 = MIMEText(open(name_att1, 'rb').read(), 'base64', 'utf-8')
-        att1["Content-Type"] = 'application/octet-stream'
-        att1["Content-Disposition"] = f'attachment; filename={name_att1}'
-        mail.attach(att1)
+        att1_to_send = MIMEText(open(name_att1, 'rb').read(), 'base64', 'utf-8')
+        att1_to_send["Content-Type"] = 'application/octet-stream'
+        att1_to_send["Content-Disposition"] = f'attachment; filename={name_att1}'
+        mail.attach(att1_to_send)
 
         try:
             service.sendmail(self.sender, self.recipient, mail.as_string())
             print("Successffully sent email")
         except  Exception as Error:
             print("Unable to send email")
-
-# mail = Mail()
-# mail.send()
-    
     
 
 
-        #ssl_connection = ssl.create_default_context()
 
 
 

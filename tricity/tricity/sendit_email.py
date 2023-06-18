@@ -1,59 +1,50 @@
+from pipelines import MongoDBPipeline
 import smtplib, ssl
-from email import encoders
-from email.mime.base import MIMEBase
-from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import os
-# from pipelines import MongoDBPipeline
-# from spiders import flatsspiders, trojmiasto
+from email.mime.multipart import MIMEMultipart
+import os 
+import re
 
+class Mail:
 
+    def __init__(self):
+        self.port = 465
+        self.smtp_serwer = 'smtp.gmail.com'
+        self.sender = 'aneta.gawron85@gmail.com'
+        self.password = os.getenv('API_KEY')
+        self.recipient = 'aneta.gawron85@gmail.com'
 
-# bart.gawron@gmail.com
+    def send(self):
+        ssl_context = ssl.create_default_context()
+        service = smtplib.SMTP_SSL(self.smtp_serwer, self.port, context=ssl_context)
+        service.login(self.sender, self.password)
 
-port = 465
-smtp_serwer = 'smtp.gmail.com'
-sender = 'aneta.gawron85@gmail.com'
-#recipient = 'bart.gawron@gmail.com'
+        mail = MIMEMultipart()
+        mail['Subject'] = 'Houses and flats for sale today'
+        mail['From'] = self.sender
+        mail['To'] = self.recipient
 
-recipient = 'aneta.gawron85@gmail.com'
-password = os.getenv('API_KEY')
-subject = "Houses and flats for sale today"
+        contents = """<b> Hello. </b>
+        <h6>In attachments I am sending houses and apartments that have been put up for sale today. </h6>"""
 
-contents1 = """<b> Hello. </b>
-<h6>In attachments I am sending houses and apartments that have been put up for sale today. </h6>"""
-contents2 = """Kind regards."""
-message = MIMEMultipart()
-message["From"] = sender
-message["To"] = recipient
-message["Subject"] = subject
+        mail.attach(MIMEText(contents, "html"))
 
-# add attachment
-message.attach(MIMEText(contents1, "html"))
-message.attach(MIMEText(contents2, "plain"))
+        name_att1 = MongoDBPipeline()
+        #att1 = name_att1.open_spider(spider='flatsspider'.filename)
 
-#name_att1 = MongoDBPipeline.open_spider(MongoDBPipeline, flatsspiders)
-#tricity/tricity/flats2flats2023-06-17 21:19:21.csv
-att1 = MIMEText(open('/home/aneta/software/repos/scrapy/tricity/tricity/flats2023-06-17 21:19:21.csv', 'rb').read(), 'base64', 'utf-8')
-#att1 = MIMEText(open(att1, 'rb'))
-att1["Content-Type"] = 'application/octet-stream'
-att1["Content-Disposition"] = 'attachment; filename="flats_17-06-2023.csv"'
-message.attach(att1)
+        att1_to_send = name_att1.set_name_file(spider_mongo_collection='flats')
+        att1_to_send_convert = re.sub("[a-zA-Z0-9]-[0-9]-[0-9]", "", att1_to_send)
+        #att1 = name_att1.open_spider(spider='flatsspider'(self.filename))
+        att1_to_send_convert = MIMEText(open(name_att1, 'rb').read(), 'base64', 'utf-8')
+        att1_to_send_convert["Content-Type"] = 'application/octet-stream'
+        att1_to_send_convert["Content-Disposition"] = f'attachment; filename={name_att1}'
+        mail.attach(att1_to_send_convert)
 
-att2 = MIMEText(open('/home/aneta/software/repos/scrapy/tricity/tricity/houses2023-06-17 21:10:58.csv', 'rb').read(), 'base64', 'utf-8')
-att2["Content-Type"] = 'application/octet-stream'
-att2["Content-Disposition"] = 'attachment; filename="houses_17-06-2023.csv"'
-message.attach(att2)
+        try:
+            service.sendmail(self.sender, self.recipient, mail.as_string())
+            print("Successffully sent email")
+        except  Exception as Error:
+            print("Unable to send email")
 
-text = message.as_string()
-
-ssl_connection = ssl.create_default_context()
-
-try:
-    with smtplib.SMTP_SSL(smtp_serwer, port, context=ssl_connection) as serwer:
-        serwer.login(sender, password)
-        serwer.sendmail(sender, recipient, text)
-        print("Successffully sent email")
-except  Exception as Error:
-    print("Unable to send email")
-
+email = Mail()
+email.send()
