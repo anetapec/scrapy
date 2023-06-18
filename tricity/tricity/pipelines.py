@@ -13,13 +13,6 @@ from email.mime.multipart import MIMEMultipart
 
 class MongoDBPipeline:
 
-    # custom_settings = {
-#    # 'FEEDS': {'/scraping_data_csv/%(name)s_%(time)s.csv': {'format': 'csv',}}
-#}
-    # def __init__(self): 
-        # self.file = self.open_spider(spider=None)
-
-
     def set_hash_url(self,item):
         result_url = hashlib.md5(f"{item['price']}{item['url']}".encode('utf-8'))
         hash_value_url = result_url.hexdigest()
@@ -33,25 +26,30 @@ class MongoDBPipeline:
     def set_scrapping_date(self):
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         return now
-
+    
+    def set_name_file(self, spider_mongo_collection):
+        filename = str(spider_mongo_collection + self.set_scrapping_date())
+        return filename
+   
     def open_spider(self, spider):
         spider_mongo_collection = spider.custom_settings["collection"]
         self.scrapping_date = self.set_scrapping_date()
         self.client = pymongo.MongoClient(settings.mongodb_uri)
         db = self.client[settings.mongodb_db]
         self.collection = db[spider_mongo_collection]
-        filename = str(spider_mongo_collection + self.set_scrapping_date())
-        file = open(filename + ".csv", 'w+b')   
-        self.exporter = CsvItemExporter(file)
-        self.exporter.start_exporting()
-        return filename
+        self.exporter = MongoDBPipeline.set_name_file(self, spider_mongo_collection)
 
     def close_spider(self, spider):
         self.client.close()
+        file = open(self.set_name_file(spider_mongo_collection=spider.custom_settings["collection"]) + ".csv", 'w+b') 
+        self.exporter = CsvItemExporter(file)
+        self.exporter.start_exporting()
         self.exporter.finish_exporting()
-        self.file.close()
-        Mail.send()
+        file.close()
 
+
+        
+        
 
     def process_item(self, item, spider):
         item['price_per_meter'] = (round(float(item['price']) / float(item['area']), 2))
@@ -102,7 +100,11 @@ class Mail:
 
         mail.attach(MIMEText(contents, "html"))
 
-        name_att1 = MongoDBPipeline.open_spider(MongoDBPipeline, spider="flatsspiders")
+        name_att1 = MongoDBPipeline()
+        #att1 = name_att1.open_spider(spider='flatsspider'.filename)
+
+        att1 = name_att1.set_name_file(spider_mongo_collection='flats')
+        #att1 = name_att1.open_spider(spider='flatsspider'(self.filename))
         att1 = MIMEText(open(name_att1, 'rb').read(), 'base64', 'utf-8')
         att1["Content-Type"] = 'application/octet-stream'
         att1["Content-Disposition"] = f'attachment; filename={name_att1}'
@@ -113,6 +115,11 @@ class Mail:
             print("Successffully sent email")
         except  Exception as Error:
             print("Unable to send email")
+
+mail = Mail()
+mail.send()
+    
+    
 
 
         #ssl_connection = ssl.create_default_context()
