@@ -1,11 +1,14 @@
 import pymongo
-import settings
+from tricity import settings
 from datetime import datetime
 import hashlib
 from scrapy.exporters import CsvItemExporter
-import csv
 from scrapy.exceptions import DropItem
 import os
+import smtplib, ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 
 
 class MongoDBPipeline:
@@ -13,7 +16,8 @@ class MongoDBPipeline:
     # custom_settings = {
 #    # 'FEEDS': {'/scraping_data_csv/%(name)s_%(time)s.csv': {'format': 'csv',}}
 #}
-
+    # def __init__(self): 
+        # self.file = self.open_spider(spider=None)
 
 
     def set_hash_url(self,item):
@@ -29,9 +33,6 @@ class MongoDBPipeline:
     def set_scrapping_date(self):
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         return now
-    
-
-    
 
     def open_spider(self, spider):
         spider_mongo_collection = spider.custom_settings["collection"]
@@ -43,11 +44,13 @@ class MongoDBPipeline:
         file = open(filename + ".csv", 'w+b')   
         self.exporter = CsvItemExporter(file)
         self.exporter.start_exporting()
+        return filename
 
     def close_spider(self, spider):
         self.client.close()
         self.exporter.finish_exporting()
         self.file.close()
+        Mail.send()
 
 
     def process_item(self, item, spider):
@@ -74,4 +77,54 @@ class MongoDBPipeline:
 
         return item
     
-    
+
+class Mail:
+
+    def __init__(self):
+        self.port = 465
+        self.smtp_serwer = 'smtp.gmail.com'
+        self.sender = 'aneta.gawron85@gmail.com'
+        self.password = os.getenv('API_KEY')
+        self.recipient = 'aneta.gawron85@gmail.com'
+
+    def send(self):
+        ssl_context = ssl.create_default_context()
+        service = smtplib.SMTP_SSL(self.smtp_serwer, self.port, context=ssl_context)
+        service.login(self.sender, self.password)
+
+        mail = MIMEMultipart()
+        mail['Subject'] = 'Houses and flats for sale today'
+        mail['From'] = self.sender
+        mail['To'] = self.recipient
+
+        contents = """<b> Hello. </b>
+        <h6>In attachments I am sending houses and apartments that have been put up for sale today. </h6>"""
+
+        mail.attach(MIMEText(contents, "html"))
+
+        name_att1 = MongoDBPipeline.open_spider(MongoDBPipeline, spider="flatsspiders")
+        att1 = MIMEText(open(name_att1, 'rb').read(), 'base64', 'utf-8')
+        att1["Content-Type"] = 'application/octet-stream'
+        att1["Content-Disposition"] = f'attachment; filename={name_att1}'
+        mail.attach(att1)
+
+        try:
+            service.sendmail(self.sender, self.recipient, mail.as_string())
+            print("Successffully sent email")
+        except  Exception as Error:
+            print("Unable to send email")
+
+
+        #ssl_connection = ssl.create_default_context()
+
+
+
+
+
+
+
+
+
+        
+
+        

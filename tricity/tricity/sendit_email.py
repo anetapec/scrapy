@@ -4,8 +4,8 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import os
-from pipelines import MongoDBPipeline
-from spiders import flatsspiders, trojmiasto
+# from pipelines import MongoDBPipeline
+# from spiders import flatsspiders, trojmiasto
 
 
 
@@ -14,9 +14,9 @@ from spiders import flatsspiders, trojmiasto
 port = 465
 smtp_serwer = 'smtp.gmail.com'
 sender = 'aneta.gawron85@gmail.com'
-recipient = 'bart.gawron@gmail.com'
+#recipient = 'bart.gawron@gmail.com'
 
-#recipient = 'aneta.gawron85@gmail.com'
+recipient = 'aneta.gawron85@gmail.com'
 password = os.getenv('API_KEY')
 subject = "Houses and flats for sale today"
 
@@ -32,10 +32,10 @@ message["Subject"] = subject
 message.attach(MIMEText(contents1, "html"))
 message.attach(MIMEText(contents2, "plain"))
 
-name_att1 = MongoDBPipeline.open_spider(spider=flatsspiders)
+#name_att1 = MongoDBPipeline.open_spider(MongoDBPipeline, flatsspiders)
 #tricity/tricity/flats2flats2023-06-17 21:19:21.csv
-#att1 = MIMEText(open('/home/aneta/software/repos/scrapy/tricity/tricity/flats2023-06-17 21:19:21.csv', 'rb').read(), 'base64', 'utf-8')
-att1 = MIMEText(open(name_att1, 'rb'))
+att1 = MIMEText(open('/home/aneta/software/repos/scrapy/tricity/tricity/flats2023-06-17 21:19:21.csv', 'rb').read(), 'base64', 'utf-8')
+#att1 = MIMEText(open(att1, 'rb'))
 att1["Content-Type"] = 'application/octet-stream'
 att1["Content-Disposition"] = 'attachment; filename="flats_17-06-2023.csv"'
 message.attach(att1)

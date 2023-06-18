@@ -15,7 +15,8 @@
             "args": [
                 "crawl", 
                 "tricity"
-            ]
+            ],
+            "envFile": "${workspaceFolder}/tricity/tricity/.env"
         }, 
         {
             "name": "Python: scrapy-flats",
@@ -27,7 +28,8 @@
             "args": [
                 "crawl", 
                 "flatsspiders"
-            ]
+            ],
+            "envFile": "${workspaceFolder}/tricity/.env"
         }, 
         {
             "name": "Python: dashboards",
@@ -36,13 +38,6 @@
             "program": "${workspaceFolder}/dashboards/app.py",
             "console": "integratedTerminal"
         },
-        {
-            "name": "Python: work",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/dashboards/workship.py",
-            "console": "integratedTerminal"
-        }
         {
             "name": "Python: sendit email",
             "type": "python",
