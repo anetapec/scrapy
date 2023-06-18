@@ -116,8 +116,8 @@ class Mail:
         except  Exception as Error:
             print("Unable to send email")
 
-mail = Mail()
-mail.send()
+# mail = Mail()
+# mail.send()
     
     
 
