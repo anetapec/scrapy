@@ -77,6 +77,7 @@ class Mail:
         self.port = 465
         self.smtp_serwer = 'smtp.gmail.com'
         self.sender = 'aneta.gawron85@gmail.com'
+        self.password = 'wgyufumaoypulziu'
         self.password = os.getenv('API_KEY')
         self.recipient = 'aneta.gawron85@gmail.com'
 
