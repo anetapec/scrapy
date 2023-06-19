@@ -1,6 +1,6 @@
 import pymongo
-#from tricity import settings #to gdy odpalamy scrapy flatsspider i tricity
-import settings # gdy odpalamy plik sendit email
+from tricity import settings #to gdy odpalamy scrapy flatsspider i tricity
+#import settings # gdy odpalamy plik sendit email
 from datetime import datetime
 import hashlib
 from scrapy.exporters import CsvItemExporter
@@ -38,18 +38,15 @@ class MongoDBPipeline:
         self.client = pymongo.MongoClient(settings.mongodb_uri)
         db = self.client[settings.mongodb_db]
         self.collection = db[spider_mongo_collection]
-        #self.exporter = MongoDBPipeline.set_name_file(self, spider_mongo_collection)
+        file = open(self.set_name_file(spider_mongo_collection=spider.custom_settings["collection"]) + ".csv", 'w+b') 
+        self.exporter = CsvItemExporter(file)
+        self.exporter.start_exporting()     
 
     def close_spider(self, spider):
         self.client.close()
-        file = open(self.set_name_file(spider_mongo_collection=spider.custom_settings["collection"]) + ".csv", 'w+b') 
-        self.exporter = CsvItemExporter(file)
-        self.exporter.start_exporting()
         self.exporter.finish_exporting()
-        file.close()
         mail = Mail()
         mail.send()
-
 
     def process_item(self, item, spider):
         item['price_per_meter'] = (round(float(item['price']) / float(item['area']), 2))
@@ -84,10 +81,9 @@ class Mail:
         self.recipient = 'aneta.gawron85@gmail.com'
 
     def send(self):
-        ssl_context = ssl.create_default_context()
-        service = smtplib.SMTP_SSL(self.smtp_serwer, self.port)
+        ssl_connection = ssl.create_default_context()
+        service = smtplib.SMTP_SSL(self.smtp_serwer, self.port, context=ssl_connection)
         service.login(self.sender, self.password)
-
         mail = MIMEMultipart()
         mail['Subject'] = 'Houses and flats for sale today'
         mail['From'] = self.sender
