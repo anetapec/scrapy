@@ -29,14 +29,14 @@ message["Subject"] = subject
 message.attach(MIMEText(contents1, "html"))
 message.attach(MIMEText(contents2, "plain"))
 
-att1 = MIMEText(open('tricity/scraping_data_csv/flats_16-06-2023.csv', 'rb').read(), 'base64', 'utf-8')
+att1 = MIMEText(open('tricity/tricity/flats2023-06-19 23:07:44.csv', 'rb').read(), 'base64', 'utf-8')
 att1["Content-Type"] = 'application/octet-stream'
-att1["Content-Disposition"] = 'attachment; filename="flats_16-06-2023.csv"'
+att1["Content-Disposition"] = 'attachment; filename="flats_19-06-2023.csv"'
 message.attach(att1)
 
-att2 = MIMEText(open('tricity/scraping_data_csv/houses_15-06-2023.csv', 'rb').read(), 'base64', 'utf-8')
+att2 = MIMEText(open('tricity/tricity/houses2023-06-19 22:59:24.csv', 'rb').read(), 'base64', 'utf-8')
 att2["Content-Type"] = 'application/octet-stream'
-att2["Content-Disposition"] = 'attachment; filename="houses_15-06-2023.csv"'
+att2["Content-Disposition"] = 'attachment; filename="houses_19-06-2023.csv"'
 message.attach(att2)
 
 text = message.as_string()
