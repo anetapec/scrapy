@@ -6,7 +6,8 @@ charts_directory = os.path.join(directory, "k8s/charts") # create a path to tric
 os.chdir(charts_directory) # change directory to folder where Dockerfile is
 helm_chart_name = "mongodb"
 release_name = "mongodb"
+namespace_name = "mongodb"
 
-p = subprocess.Popen(f"helm upgrade {release_name} {helm_chart_name} --install --create-namespace -f ./{helm_chart_name}/values.yaml -f ./{helm_chart_name}/values/common-values.yaml", shell=True)
+p = subprocess.Popen(f"helm upgrade {release_name} {helm_chart_name} -n {namespace_name} --install --create-namespace -f ./{helm_chart_name}/values.yaml -f ./{helm_chart_name}/values/common-values.yaml", shell=True)
 print(p.communicate())
 

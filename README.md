@@ -62,3 +62,10 @@ mongorestore -d tricity --drop  ./db=tricity/tricity
 
 sudo cp -r /home/aneta/software/repos/scrapy/db=tricity /tmp/hostpath-provisioner/mongodb/mongodb/data/db/
 
+Additional node config if coredns is not working
+```bash
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -F
+```
