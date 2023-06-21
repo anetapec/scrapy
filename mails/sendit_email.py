@@ -11,9 +11,9 @@ import os
 port = 465
 smtp_serwer = 'smtp.gmail.com'
 sender = 'aneta.gawron85@gmail.com'
-recipient = 'bart.gawron@gmail.com'
+#recipient = 'bart.gawron@gmail.com'
 
-#recipient = 'aneta.gawron85@gmail.com'
+recipient = 'aneta.gawron85@gmail.com'
 password = os.getenv('API_KEY')
 subject = "Houses and flats for sale today"
 
@@ -29,14 +29,14 @@ message["Subject"] = subject
 message.attach(MIMEText(contents1, "html"))
 message.attach(MIMEText(contents2, "plain"))
 
-att1 = MIMEText(open('tricity/tricity/flats2023-06-19 23:07:44.csv', 'rb').read(), 'base64', 'utf-8')
+att1 = MIMEText(open('tricity/tricity/flats2023-06-21 19:37:20.csv', 'rb').read(), 'base64', 'utf-8')
 att1["Content-Type"] = 'application/octet-stream'
-att1["Content-Disposition"] = 'attachment; filename="flats_19-06-2023.csv"'
+att1["Content-Disposition"] = 'attachment; filename="flats_21-06-2023.csv"'
 message.attach(att1)
 
-att2 = MIMEText(open('tricity/tricity/houses2023-06-19 22:59:24.csv', 'rb').read(), 'base64', 'utf-8')
+att2 = MIMEText(open('tricity/tricity/houses2023-06-21 18:49:19.csv', 'rb').read(), 'base64', 'utf-8')
 att2["Content-Type"] = 'application/octet-stream'
-att2["Content-Disposition"] = 'attachment; filename="houses_19-06-2023.csv"'
+att2["Content-Disposition"] = 'attachment; filename="houses_21-06-2023.csv"'
 message.attach(att2)
 
 text = message.as_string()
