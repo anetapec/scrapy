@@ -48,7 +48,8 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/automation/minikub_start.py",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "justMyCode": false,
         },
         {
             "name": "Docker build tricity",
@@ -75,6 +76,13 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/automation/helm.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Scraper upgrade",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/automation/scraper.py",
             "console": "integratedTerminal"
         }
     ]
