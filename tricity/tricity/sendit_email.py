@@ -1,8 +1,8 @@
-#from tricity import *
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-import os
+from smtplib import SMTPAuthenticationError
+from socket import gaierror
 
 
 
@@ -40,8 +40,16 @@ class Mail:
         try:
             service.sendmail(self.sender, self.recipient, mail.as_string())
             print("Successffully sent email")
-        except  Exception :
-            print("Unable to send email")
+        except SMTPAuthenticationError:
+            print("The username and/or password you entered is incorrect")
+        except (gaierror, ConnectionRefusedError):
+            print('Failed to connect to the server. Bad connection settings?')
+        except smtplib.SMTPServerDisconnected:
+            print('Failed to connect to the server. Wrong user/password?')
+        except smtplib.SMTPException as e:
+            print('SMTP error occurred: ' + str(e))
+        
+        
     
 
 # mail = Mail()
