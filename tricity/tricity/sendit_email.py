@@ -1,4 +1,4 @@
-from tricity import *
+#from tricity import *
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -11,8 +11,8 @@ class Mail:
     def __init__(self, filename):
         self.port = 465
         self.smtp_serwer = 'smtp.gmail.com'
-        self.sender = 'aneta.gawron85@gmail.com'
-        self.password = 'wgyufumaoypulziu'
+        self.sender = 'aneta.pecka@gmail.com'
+        self.password = 'odryawntjeotfpig'
         #self.password = os.getenv('API_KEY')
         self.recipient = 'aneta.gawron85@gmail.com'
         self.filename = filename
@@ -43,3 +43,6 @@ class Mail:
         except  Exception :
             print("Unable to send email")
     
+
+# mail = Mail()
+# mail.send()
