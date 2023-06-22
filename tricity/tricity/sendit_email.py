@@ -2,18 +2,20 @@ from tricity import *
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import os
 
 
 
 class Mail:
 
-    def __init__(self):
+    def __init__(self, filename):
         self.port = 465
         self.smtp_serwer = 'smtp.gmail.com'
         self.sender = 'aneta.gawron85@gmail.com'
         self.password = 'wgyufumaoypulziu'
         #self.password = os.getenv('API_KEY')
         self.recipient = 'aneta.gawron85@gmail.com'
+        self.filename = filename
 
     def send(self):
         ssl_connection = ssl.create_default_context()
@@ -29,19 +31,15 @@ class Mail:
 
         mail.attach(MIMEText(contents, "html"))
 
-        # name_att1 = MongoDBPipeline()
-        # #att1 = name_att1.open_spider(spider='flatsspider'.filename)
-
-        # att1_to_send = name_att1.set_name_file(spider_mongo_collection='flats')
-        # #att1 = name_att1.open_spider(spider='flatsspider'(self.filename))
-        # att1_to_send = MIMEText(open(name_att1, 'rb').read(), 'base64', 'utf-8')
-        # att1_to_send["Content-Type"] = 'application/octet-stream'
-        # att1_to_send["Content-Disposition"] = f'attachment; filename={name_att1}'
-        # mail.attach(att1_to_send)
+        file_content = open(self.filename, 'rb').read()
+        att1_to_send = MIMEText(file_content, 'base64', 'utf-8')
+        att1_to_send["Content-Type"] = 'application/octet-stream'
+        att1_to_send["Content-Disposition"] = f'attachment; filename={self.filename}'
+        mail.attach(att1_to_send)
 
         try:
             service.sendmail(self.sender, self.recipient, mail.as_string())
             print("Successffully sent email")
-        except  Exception as Error:
+        except  Exception :
             print("Unable to send email")
     

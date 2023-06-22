@@ -23,27 +23,30 @@ class MongoDBPipeline:
         return hash_value_area
 
     def set_scrapping_date(self):
-        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        now = self.time_now.strftime('%Y-%m-%d %H:%M:%S')
         return now
     
     def set_name_file(self, spider_mongo_collection):
-        filename = str(spider_mongo_collection + self.set_scrapping_date())
-        return filename
+        file_timestamp = self.time_now.strftime('%Y-%m-%d_%H-%M-%S')
+        self.filename = str(f"{spider_mongo_collection}_{file_timestamp}.csv") # 'flats_2023-06-22_09-54-36.csv'
    
     def open_spider(self, spider):
+        self.time_now = datetime.now()
         spider_mongo_collection = spider.custom_settings["collection"]
         self.scrapping_date = self.set_scrapping_date()
         self.client = pymongo.MongoClient(settings.mongodb_uri)
         db = self.client[settings.mongodb_db]
         self.collection = db[spider_mongo_collection]
-        file = open(self.set_name_file(spider_mongo_collection=spider.custom_settings["collection"]) + ".csv", 'w+b') 
-        self.exporter = CsvItemExporter(file)
+        self.set_name_file(spider_mongo_collection=spider.custom_settings["collection"])
+        self.csv_file = open(self.filename, 'w+b') 
+        self.exporter = CsvItemExporter(self.csv_file)
         self.exporter.start_exporting()     
 
     def close_spider(self, spider):
         self.client.close()
         self.exporter.finish_exporting()
-        mail = Mail()
+        self.csv_file.close()
+        mail = Mail(self.filename)
         mail.send()
 
     def process_item(self, item, spider):
@@ -51,16 +54,14 @@ class MongoDBPipeline:
         item['last_seen_date'] = self.scrapping_date
         item['hash'] = self.set_hash_url(item)
         item['hash_area'] = self.set_hash_area(item)
-        filter_dict = {'hash': item['hash']}
-        filter_dict_area = {'hash_area': item['hash_area']}
-        if self.collection.count_documents((filter_dict), limit = 1) !=0 :
+        filter_or = { '$or': [ {'hash_area': item['hash_area']}, {'hash': item['hash']} ] }
+
+        if self.collection.count_documents((filter_or), limit = 1) !=0 :
             new_value = { '$set': {'last_seen_date': item['last_seen_date']}}
-            self.collection.update_one(filter_dict, new_value)
-            raise DropItem("Duplicate item found: {}".format(item['scrapping_date']))
-        if self.collection.count_documents((filter_dict_area), limit = 1) !=0 :
-            new_value = { '$set': {'last_seen_date': item['last_seen_date']}}
-            self.collection.update_one(filter_dict_area, new_value)
-            raise DropItem("Duplicate item found: {}".format(item['scrapping_date']))
+            self.collection.update_one(filter_or, new_value)
+            # TODO remove after test
+            #self.exporter.export_item(item)
+            raise DropItem(f"Duplicate item found: { item['url']} ")
         else:
             item['scrapping_date'] = self.scrapping_date
             data = dict(item)
