@@ -37,13 +37,6 @@
             "envFile": "${workspaceFolder}/dashboards/.env"
         },
         {
-            "name": "Python: work",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/dashboards/workship.py",
-            "console": "integratedTerminal"
-        },
-        {
             "name": "Minikbe start",
             "type": "python",
             "request": "launch",
@@ -67,7 +60,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/automation/docker.py",
             "args": [
-                "-folder", "tricity", "-image", "tricity:0.0.4"
+                "-folder", "tricity", "-image", "scrapy_dash:0.0.4"
             ],
             "console": "integratedTerminal"
         },
