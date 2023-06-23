@@ -41,7 +41,7 @@ sudo -E minikube start --driver=none --extra-config=kubelet.resolv-conf=/run/sys
 
 ```
 
-kubectl port-forward svc/release1-mongodb 27018:27017
+kubectl port-forward svc/mongodb 27018:27017
 kubectl port-forward svc/mongodb 27018:27017
 
 # restore mongodb

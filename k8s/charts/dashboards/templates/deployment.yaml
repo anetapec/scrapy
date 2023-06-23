@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: dashboards
-        image: scrapy_dash:latest
+        image: scrapy_dash:0.0.4
         env:
         - name: MONGO_URI
           value: mongodb://mongodb.mongodb.svc:27017

@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: scrapy",
+            "name": "Python: scrapy-houses",
             "type": "python",
             "request": "launch",
             "module": "scrapy",
@@ -48,7 +48,7 @@
             "name": "Docker build tricity",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/automation/docker.py",
+            "program": "${workspaceFolder}/automation/docker_image.py",
             "args": [
                 "-folder", "tricity", "-image", "tricity:0.0.4"
             ],
@@ -58,24 +58,31 @@
             "name": "Docker build dashboards",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/automation/docker.py",
+            "program": "${workspaceFolder}/automation/docker_image.py",
             "args": [
                 "-folder", "tricity", "-image", "scrapy_dash:0.0.4"
             ],
             "console": "integratedTerminal"
         },
         {
-            "name": "Helm upgrade",
+            "name": "Mongodb upgrade",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/automation/helm.py",
+            "program": "${workspaceFolder}/automation/mongodb_upgrade.py",
             "console": "integratedTerminal"
         },
         {
             "name": "Scraper upgrade",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/automation/scraper.py",
+            "program": "${workspaceFolder}/automation/scraper_upgrade.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Dashboards upgrade",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/automation/dashboards_upgrade.py",
             "console": "integratedTerminal"
         }
     ]
