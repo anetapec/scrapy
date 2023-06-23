@@ -14,7 +14,8 @@ class Mail:
         self.sender = 'aneta.pecka@gmail.com'
         self.password = 'odryawntjeotfpig'
         #self.password = os.getenv('API_KEY')
-        self.recipient = 'aneta.gawron85@gmail.com'
+        #self.recipient = 'aneta.gawron85@gmail.com'
+        self.recipient = 'bart.gawron@gmail.com'
         self.filename = filename
 
     def send(self):
