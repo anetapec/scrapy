@@ -69,3 +69,10 @@ iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
 iptables -F
 ```
+
+
+# --feature-gates
+```bash
+minikube start --feature-gates="TTLAfterFinished=true"
+```
+

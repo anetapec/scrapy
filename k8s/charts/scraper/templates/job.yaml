@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: scrapy-job
+spec:
+  ttlSecondsAfterFinished: 10
+  template:
+    spec:
+      containers:
+      - name: scraper
+        image: tricity:0.0.4
+        comand: ["scrapy", "crawl", "tricity"]
+      restartPolicy: Never
+        env:
+        - name: MONGO_URI
+          value: mongodb://mongodb.mongodb.svc:27017
+        - name: MONGO_PASSWORD
+          value: scrapy1234
+        - name: MONGO_USER
+          value: scrapy
+    
