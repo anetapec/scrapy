@@ -9,8 +9,6 @@ spec:
       containers:
       - name: scraper
         image: tricity:0.0.4
-        comand: ["scrapy", "crawl", "tricity"]
-      restartPolicy: Never
         env:
         - name: MONGO_URI
           value: mongodb://mongodb.mongodb.svc:27017
@@ -18,4 +16,5 @@ spec:
           value: scrapy1234
         - name: MONGO_USER
           value: scrapy
+      restartPolicy: Never
     

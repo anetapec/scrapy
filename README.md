@@ -64,15 +64,24 @@ sudo cp -r /home/aneta/software/repos/scrapy/db=tricity /tmp/hostpath-provisione
 
 Additional node config if coredns is not working
 ```bash
-iptables -P INPUT ACCEPT
-iptables -P FORWARD ACCEPT
-iptables -P OUTPUT ACCEPT
-iptables -F
+sudo iptables -P INPUT ACCEPT
+sudo iptables -P FORWARD ACCEPT
+sudo iptables -P OUTPUT ACCEPT
+sudo iptables -F
+sudo iptables-save
 ```
 
 
 # --feature-gates
 ```bash
 minikube start --feature-gates="TTLAfterFinished=true"
+
+
+```
+# minikube stop
+
+```bash
+sudo chown -R $USER $HOME/.minikube; chmod -R u+wrx $HOME/.minikube
 ```
 
+/etc/network/if-pre-up.d

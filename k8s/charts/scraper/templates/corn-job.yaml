@@ -1,23 +1,22 @@
-apiVersion: batch/v1beta1
-kind: CornJob
+apiVersion: batch/v1
+kind: CronJob
 metadata:
-    name: scrapy-corn
+  name: scrapy-cron
 spec:
-    schedule: "5 10,15,20 * * *"
-    jobTemplate:
-      spec:
-        template:
-          spec:
-            restartPolicy: Never
-            containers:
-            - name: scraper
-              image: tricity:0.0.4
-              comand: ["scrapy", "crawl", "tricity"]
-              env:
-              - name: MONGO_URI
-                value: mongodb://mongodb.mongodb.svc:27017
-              - name: MONGO_PASSWORD
-                value: scrapy1234
-              - name: MONGO_USER
-                value: scrapy
-            restartPolicy: Never
+  schedule: "5 10,15,20 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: scraper
+            image: tricity:0.0.4
+            env:
+            - name: MONGO_URI
+              value: mongodb://mongodb.mongodb.svc:27017
+            - name: MONGO_PASSWORD
+              value: scrapy1234
+            - name: MONGO_USER
+              value: scrapy
+          restartPolicy: Never
