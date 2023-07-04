@@ -46,8 +46,8 @@ class MongoDBPipeline:
         self.client.close()
         self.exporter.finish_exporting()
         self.csv_file.close()
-        mail = Mail(self.filename)
-        mail.send()
+        # mail = Mail(self.filename)
+        # mail.send()
 
     def process_item(self, item, spider):
         item['price_per_meter'] = (round(float(item['price']) / float(item['area']), 2))
@@ -56,19 +56,25 @@ class MongoDBPipeline:
         item['hash_area'] = self.set_hash_area(item)
         filter_or = { '$or': [ {'hash_area': item['hash_area']}, {'hash': item['hash']} ] }
         
-        # if self.collection.find({'$match': {float(item['price_per_meter']) : {'$gte': 1.0, '$lte' : 300.0 }}}):
-        #    raise DropItem(f"Advertisement for a house for rent ")
+        if self.collection.find({item['price_per_meter']: {'$lte' : 300 }}):
+             raise DropItem(f"Advertisement for a house for rent ")
+        
         # if self.collection.find(rent):
             # raise DropItem(f"Advertisement for a house for rent ")
 
         # if self.collection.aggregate([
-            # {'$match': {"item['price_per_meter']" : {'$gte': '1.0', '$lte' : '300.0' }}}
+            # {'$match': {"item['price_per_meter']" : {'$lte' : 300 }}}
         # ]):
             # #{'$group': {"item['price_per_meter']"}}
-            # raise DropItem(f"Advertisement for a house for rent")
-
+            # #raise DropItem(f"Advertisement for a house for rent")
+            # self.collection.delete_one(item)
             
-                                     
+        # if self.collection.aggregate([{'$match': {"item['price_per_meter']": {'$gte': 300}}}]) :
+            # raise DropItem(f"Advertisement for a house for rent")
+            
+        
+        
+                                   
 
         if self.collection.count_documents((filter_or), limit = 1) !=0 :
             new_value = { '$set': {'last_seen_date': item['last_seen_date']}}
@@ -76,11 +82,18 @@ class MongoDBPipeline:
             # TODO remove after test
             #self.exporter.export_item(item)
             raise DropItem(f"Duplicate item found: { item['url']} ")
+        
         else:
             item['scrapping_date'] = self.scrapping_date
             data = dict(item)
             self.collection.insert_one(data)
             self.exporter.export_item(item)
+        
+        
+        
+
+
+        
         return item
     
 
