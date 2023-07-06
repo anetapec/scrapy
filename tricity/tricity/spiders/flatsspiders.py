@@ -1,8 +1,6 @@
 import scrapy
 from tricity.items import HouseItem
-#from items import HouseItem
 import re
-import requests
 
 
 class FlatsspidersSpider(scrapy.Spider):
@@ -30,28 +28,28 @@ class FlatsspidersSpider(scrapy.Spider):
         path_url = response.css(".pagination__controls__next::attr(href)").get()  
         base_url = re.sub(r"\?strona.+", "", response.url)
         
-        next_page = base_url + path_url
         if path_url is not None:
+            next_page = base_url + path_url
             yield scrapy.Request(next_page, callback=self.parse)
-        
-        # First attempt to solve:
-
-        # base_url = self.start_urls
-        # next_page = base_url + path_url
-        # if path_url is not None:
-            # yield response.follow(next_page, callback=self.parse)
-
-########################################################################################
-        # Second attempt to solve: - to wg mnie nie działa bo w naszym adresie są 
-            # przecinki i z tego co wyczytałam to może traktowac adres jako krotkę 
-        
-        # base_url = requests.post(self.start_urls)    # tu próbowałam też z request.get
-        # next_page = base_url.url + path_url
-        # if path_url is not None:
-            # yield scrapy.Request(next_page, callback=self.parse)
 
 
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
         
         

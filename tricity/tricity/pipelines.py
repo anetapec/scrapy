@@ -1,6 +1,5 @@
 import pymongo
-from tricity import settings #to gdy odpalamy scrapy flatsspider i tricity
-#import settings # gdy odpalamy plik sendit email
+from tricity import settings
 from datetime import datetime
 import hashlib
 from scrapy.exporters import CsvItemExporter
@@ -28,7 +27,7 @@ class MongoDBPipeline:
     
     def set_name_file(self, spider_mongo_collection):
         file_timestamp = self.time_now.strftime('%Y-%m-%d_%H-%M-%S')
-        self.filename = str(f"{spider_mongo_collection}_{file_timestamp}.csv") # 'flats_2023-06-22_09-54-36.csv'
+        self.filename = str(f"{spider_mongo_collection}_{file_timestamp}.csv") 
    
     def open_spider(self, spider):
         self.time_now = datetime.now()
@@ -46,8 +45,8 @@ class MongoDBPipeline:
         self.client.close()
         self.exporter.finish_exporting()
         self.csv_file.close()
-        mail = Mail(self.filename)
-        mail.send()
+        # mail = Mail(self.filename)
+        # mail.send()
 
     def process_item(self, item, spider):
         item['price_per_meter'] = (round(float(item['price']) / float(item['area']), 2))
@@ -62,8 +61,6 @@ class MongoDBPipeline:
         if self.collection.count_documents((filter_or), limit = 1) !=0 :
             new_value = { '$set': {'last_seen_date': item['last_seen_date']}}
             self.collection.update_one(filter_or, new_value)
-            # TODO remove after test
-            #self.exporter.export_item(item)
             raise DropItem(f"Duplicate item found: { item['url']} ")
         
         else:
