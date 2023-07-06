@@ -45,8 +45,8 @@ class MongoDBPipeline:
         self.client.close()
         self.exporter.finish_exporting()
         self.csv_file.close()
-        # mail = Mail(self.filename)
-        # mail.send()
+        mail = Mail(self.filename)
+        mail.send()
 
     def process_item(self, item, spider):
         item['price_per_meter'] = (round(float(item['price']) / float(item['area']), 2))
