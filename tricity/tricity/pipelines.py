@@ -45,6 +45,9 @@ class MongoDBPipeline:
     def close_spider(self, spider):
         self.client.close()
         self.exporter.finish_exporting()
+        self.csv_file.close()
+        mail = Mail(self.filename)
+        mail.send()
 
 
 
