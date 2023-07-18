@@ -4,7 +4,6 @@ from datetime import datetime
 import hashlib
 from scrapy.exporters import CsvItemExporter
 from scrapy.exceptions import DropItem
-
 from tricity.sendit_email import Mail
 
 
@@ -37,16 +36,39 @@ class MongoDBPipeline:
         db = self.client[settings.mongodb_db]
         self.collection = db[spider_mongo_collection]
         self.set_name_file(spider_mongo_collection=spider.custom_settings["collection"])
-        self.csv_file = open(self.filename, 'w+b') 
+        self.csv_file = open(self.filename, 'w+b')
         self.exporter = CsvItemExporter(self.csv_file)
-        self.exporter.start_exporting()     
+        self.exporter.start_exporting() 
+        
+
 
     def close_spider(self, spider):
         self.client.close()
         self.exporter.finish_exporting()
-        self.csv_file.close()
-        mail = Mail(self.filename)
-        mail.send()
+
+
+
+
+        # contents = self.csv_file.read()
+        # if contents == b'':
+            # self.csv_file.close()
+
+        # else:
+            # self.csv_file.close()
+            # mail = Mail(self.filename)
+            # mail.send()
+###############################
+        # contents = len(self.filename)
+        # if contents == 0: 
+            # self.csv_file.close()
+            
+            
+        # else:      
+            # self.csv_file.close()
+            # mail = Mail(self.filename)
+            # mail.send()
+        
+        
 
     def process_item(self, item, spider):
         item['price_per_meter'] = (round(float(item['price']) / float(item['area']), 2))
