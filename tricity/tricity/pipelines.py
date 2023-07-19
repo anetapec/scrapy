@@ -94,6 +94,13 @@ class MongoDBPipeline:
             self.collection.insert_one(data)
             self.exporter.export_item(item)
 
+            # new_data = self.exporter.export_item(item)
+            # number_new_data = len(new_data)
+            # if number_new_data == 0:
+                #self.csv_file.close()
+                
+
+
         return item
     
 
