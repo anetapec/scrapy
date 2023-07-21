@@ -3,7 +3,6 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from smtplib import SMTPAuthenticationError
 from socket import gaierror
-import csv
 
 
 
@@ -16,8 +15,8 @@ class Mail:
         self.password = 'odryawntjeotfpig'
         #self.password = os.getenv('API_KEY')
         #self.recipient = 'aneta.gawron85@gmail.com'
-        #self.recipient = 'aneta.pecka@gmail.com'
-        self.recipient = 'bart.gawron@gmail.com'
+        self.recipient = 'aneta.pecka@gmail.com'
+        #self.recipient = 'bart.gawron@gmail.com'
         self.filename = filename
 
     def send(self):
@@ -33,37 +32,28 @@ class Mail:
         <h6>In attachments I am sending houses and apartments that have been put up for sale today. </h6>"""
 
         mail.attach(MIMEText(contents, "html"))
-
-        # with open(self.filename, '+r') as file_content:
-            # new_data = csv.reader(file_content)
-            # for row in new_data:
-                # print(row)      # => 97
-# 55
-# 54
-# 52
-# 53
-
-# AttributeError: '_io.BufferedRandom' object has no attribute 'encode'
-
-
+       
         file_content = open(self.filename, 'rb').read()
+        
+        if file_content != b'':
+            att1_to_send = MIMEText(file_content, 'base64', 'utf-8')
+            att1_to_send["Content-Type"] = 'application/octet-stream'
+            att1_to_send["Content-Disposition"] = f'attachment; filename={self.filename}'
+            mail.attach(att1_to_send)
 
-        att1_to_send = MIMEText(file_content, 'base64', 'utf-8')
-        att1_to_send["Content-Type"] = 'application/octet-stream'
-        att1_to_send["Content-Disposition"] = f'attachment; filename={self.filename}'
-        mail.attach(att1_to_send)
-
-        try:
-            service.sendmail(self.sender, self.recipient, mail.as_string())
-            print("Successffully sent email")
-        except SMTPAuthenticationError:
-            print("The username and/or password you entered is incorrect")
-        except (gaierror, ConnectionRefusedError):
-            print('Failed to connect to the server. Bad connection settings?')
-        except smtplib.SMTPServerDisconnected:
-            print('Failed to connect to the server. Wrong user/password?')
-        except smtplib.SMTPException as e:
-            print('SMTP error occurred: ' + str(e))
+            try:
+                service.sendmail(self.sender, self.recipient, mail.as_string())
+                print("Successffully sent email")
+            except SMTPAuthenticationError:
+                print("The username and/or password you entered is incorrect")
+            except (gaierror, ConnectionRefusedError):
+                print('Failed to connect to the server. Bad connection settings?')
+            except smtplib.SMTPServerDisconnected:
+                print('Failed to connect to the server. Wrong user/password?')
+            except smtplib.SMTPException as e:
+                print('SMTP error occurred: ' + str(e))
+ 
+        print("No new ads")
         
         
     

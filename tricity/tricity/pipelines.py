@@ -5,7 +5,6 @@ import hashlib
 from scrapy.exporters import CsvItemExporter
 from scrapy.exceptions import DropItem
 from tricity.sendit_email import Mail
-import csv 
 
 
 
@@ -37,23 +36,9 @@ class MongoDBPipeline:
         db = self.client[settings.mongodb_db]
         self.collection = db[spider_mongo_collection]
         self.set_name_file(spider_mongo_collection=spider.custom_settings["collection"])
-        # with open(self.filename, 'w+b') as self.csv_file:
-            # new_data = csv.reader(self.csv_file, delimiter=',')
-            # #line_count = 0
-            # for row in new_data:
-                # print(row[0])
-        
         self.csv_file = open(self.filename, 'w+b')
-        
-        
-        
         self.exporter = CsvItemExporter(self.csv_file)
         self.exporter.start_exporting() 
-        # csvreader = self.csv_file.read(self.filename, delimiter=",")
-        # for row in csvreader:
-            # print(row[0]) 
-        
-
 
     def close_spider(self, spider):
         self.client.close()
@@ -61,30 +46,6 @@ class MongoDBPipeline:
         self.csv_file.close()
         mail = Mail(self.filename)
         mail.send()
-
-
-
-
-        # contents = self.csv_file.read()
-        # if contents == b'':
-            # self.csv_file.close()
-
-        # else:
-            # self.csv_file.close()
-            # mail = Mail(self.filename)
-            # mail.send()
-###############################
-        # contents = len(self.filename)
-        # if contents == 0: 
-            # self.csv_file.close()
-            
-            
-        # else:      
-            # self.csv_file.close()
-            # mail = Mail(self.filename)
-            # mail.send()
-        
-        
 
     def process_item(self, item, spider):
         item['price_per_meter'] = (round(float(item['price']) / float(item['area']), 2))
@@ -106,13 +67,6 @@ class MongoDBPipeline:
             data = dict(item)
             self.collection.insert_one(data)
             self.exporter.export_item(item)
-
-            # new_data = self.exporter.export_item(item)
-            # number_new_data = len(new_data)
-            # if number_new_data == 0:
-                #self.csv_file.close()
-                
-
 
         return item
     
