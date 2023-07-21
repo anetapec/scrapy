@@ -5,6 +5,7 @@ import hashlib
 from scrapy.exporters import CsvItemExporter
 from scrapy.exceptions import DropItem
 from tricity.sendit_email import Mail
+import csv 
 
 
 
@@ -36,9 +37,21 @@ class MongoDBPipeline:
         db = self.client[settings.mongodb_db]
         self.collection = db[spider_mongo_collection]
         self.set_name_file(spider_mongo_collection=spider.custom_settings["collection"])
+        # with open(self.filename, 'w+b') as self.csv_file:
+            # new_data = csv.reader(self.csv_file, delimiter=',')
+            # #line_count = 0
+            # for row in new_data:
+                # print(row[0])
+        
         self.csv_file = open(self.filename, 'w+b')
+        
+        
+        
         self.exporter = CsvItemExporter(self.csv_file)
         self.exporter.start_exporting() 
+        # csvreader = self.csv_file.read(self.filename, delimiter=",")
+        # for row in csvreader:
+            # print(row[0]) 
         
 
 

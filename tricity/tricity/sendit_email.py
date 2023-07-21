@@ -3,6 +3,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from smtplib import SMTPAuthenticationError
 from socket import gaierror
+import csv
 
 
 
@@ -33,7 +34,20 @@ class Mail:
 
         mail.attach(MIMEText(contents, "html"))
 
+        # with open(self.filename, '+r') as file_content:
+            # new_data = csv.reader(file_content)
+            # for row in new_data:
+                # print(row)      # => 97
+# 55
+# 54
+# 52
+# 53
+
+# AttributeError: '_io.BufferedRandom' object has no attribute 'encode'
+
+
         file_content = open(self.filename, 'rb').read()
+
         att1_to_send = MIMEText(file_content, 'base64', 'utf-8')
         att1_to_send["Content-Type"] = 'application/octet-stream'
         att1_to_send["Content-Disposition"] = f'attachment; filename={self.filename}'
