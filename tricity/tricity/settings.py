@@ -45,15 +45,15 @@ RANDOMIZE_DOWNLOAD_DELAY = True
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
+# SPIDER_MIDDLEWARES = {
 #    "tricity.middlewares.TricitySpiderMiddleware": 543,
-#}
+# }
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
+# DOWNLOADER_MIDDLEWARES = {
 #    "tricity.middlewares.TricityDownloaderMiddleware": 543,
-#}
+# }
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -67,7 +67,7 @@ ITEM_PIPELINES = {'tricity.pipelines.MongoDBPipeline': 300}
 
 mongodb_uri = 'mongodb://localhost:27017' 
 mongodb_db = 'tricity'
-colection_name = 'houses'
+
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
@@ -93,3 +93,23 @@ colection_name = 'houses'
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
+# FEEDS = {
+    # 'scraping_data/%(name)s_%(time)s.csv': {
+        # 'format': 'csv',
+        # 'encoding': 'utf8',
+        # 'store_empty': False,
+        # 'item_classes': [MyCustomFilter, 'myproject.items.MyItemClass2'],
+        # 'fields': None,
+        # 'indent': 4,
+        # 'item_export_kwargs': {
+        #    'export_empty_fields': True,
+        # },
+
+                                            # }
+# }
+
+# FEEDS = {
+    # 'scraping_data_csv/%(name)s_%(time)s.csv': {
+        # 'format': 'csv',
+    # }
+# }

@@ -9,7 +9,7 @@ class HousesspiderSpider(scrapy.Spider):
     allowed_domains = ['ogloszenia.trojmiasto.pl']
     start_urls = ['https://ogloszenia.trojmiasto.pl/nieruchomosci/dom/gdynia/']
 
-    
+    custom_settings = { "collection": "houses"}
     
     def parse(self, response):
         # Parse each houses 
@@ -30,10 +30,9 @@ class HousesspiderSpider(scrapy.Spider):
 
             yield item
 
-         
-        path_url = response.css('.pages__controls__next ::attr(href)').extract_first()
-        base_url = "https://ogloszenia.trojmiasto.pl/nieruchomosci/dom/gdynia/"
-        next_page = base_url + path_url
+        path_url = response.css('.pages__controls__next ::attr(href)').get()
+        base_url = re.sub(r"\?strona.+", "", response.url)
         if path_url is not None:
+            next_page = base_url + path_url
             yield response.follow(next_page, callback=self.parse)
            
