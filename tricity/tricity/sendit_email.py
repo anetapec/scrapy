@@ -15,8 +15,8 @@ class Mail:
         self.password = 'odryawntjeotfpig'
         #self.password = os.getenv('API_KEY')
         #self.recipient = 'aneta.gawron85@gmail.com'
-        self.recipient = 'aneta.pecka@gmail.com'
-        #self.recipient = 'bart.gawron@gmail.com'
+        #self.recipient = 'aneta.pecka@gmail.com'
+        self.recipient = 'bart.gawron@gmail.com'
         self.filename = filename
 
     def send(self):
@@ -40,20 +40,21 @@ class Mail:
             att1_to_send["Content-Type"] = 'application/octet-stream'
             att1_to_send["Content-Disposition"] = f'attachment; filename={self.filename}'
             mail.attach(att1_to_send)
-
-            try:
-                service.sendmail(self.sender, self.recipient, mail.as_string())
-                print("Successffully sent email")
-            except SMTPAuthenticationError:
-                print("The username and/or password you entered is incorrect")
-            except (gaierror, ConnectionRefusedError):
-                print('Failed to connect to the server. Bad connection settings?')
-            except smtplib.SMTPServerDisconnected:
-                print('Failed to connect to the server. Wrong user/password?')
-            except smtplib.SMTPException as e:
-                print('SMTP error occurred: ' + str(e))
- 
         print("No new ads")
+
+        try:
+            service.sendmail(self.sender, self.recipient, mail.as_string())
+            print("Successffully sent email")
+        except SMTPAuthenticationError:
+            print("The username and/or password you entered is incorrect")
+        except (gaierror, ConnectionRefusedError):
+            print('Failed to connect to the server. Bad connection settings?')
+        except smtplib.SMTPServerDisconnected:
+            print('Failed to connect to the server. Wrong user/password?')
+        except smtplib.SMTPException as e:
+            print('SMTP error occurred: ' + str(e))
+ 
+            
         
         
     
