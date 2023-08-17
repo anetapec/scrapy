@@ -35,24 +35,30 @@ class Mail:
        
         file_content = open(self.filename, 'rb').read()
         
-        if file_content != b'':
+        if file_content == b'':
+            print('No new ads')
+        else:
             att1_to_send = MIMEText(file_content, 'base64', 'utf-8')
             att1_to_send["Content-Type"] = 'application/octet-stream'
             att1_to_send["Content-Disposition"] = f'attachment; filename={self.filename}'
             mail.attach(att1_to_send)
-        print("No new ads")
+        
+        
 
-        try:
-            service.sendmail(self.sender, self.recipient, mail.as_string())
-            print("Successffully sent email")
-        except SMTPAuthenticationError:
-            print("The username and/or password you entered is incorrect")
-        except (gaierror, ConnectionRefusedError):
-            print('Failed to connect to the server. Bad connection settings?')
-        except smtplib.SMTPServerDisconnected:
-            print('Failed to connect to the server. Wrong user/password?')
-        except smtplib.SMTPException as e:
-            print('SMTP error occurred: ' + str(e))
+            try:
+                service.sendmail(self.sender, self.recipient, mail.as_string())
+                print("Successffully sent email")
+            except SMTPAuthenticationError:
+                print("The username and/or password you entered is incorrect")
+            except (gaierror, ConnectionRefusedError):
+                print('Failed to connect to the server. Bad connection settings?')
+            except smtplib.SMTPServerDisconnected:
+                print('Failed to connect to the server. Wrong user/password?')
+            except smtplib.SMTPException as e:
+                print('SMTP error occurred: ' + str(e))
+
+       
+       
  
             
         
